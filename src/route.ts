@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
 import NotFound from "./pages/NotFound";
 
@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Home,
+        Component: Dashboard,
       },
     ],
   },

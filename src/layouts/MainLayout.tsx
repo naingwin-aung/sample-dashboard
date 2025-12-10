@@ -9,7 +9,9 @@ const MainLayout = () => {
       <AppSidebar />
       <main className="w-full">
         <Navbar />
-        <Outlet />
+        <section className="p-5">
+          <Outlet />
+        </section>
       </main>
     </SidebarProvider>
   );
