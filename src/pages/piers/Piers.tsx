@@ -2,8 +2,17 @@ import { ListPierQueryOption, type Pier } from "@/api/piers";
 import ErrorTable from "@/components/ErrorTable";
 import TablePagination from "@/components/TablePagination";
 import TableSkeleton from "@/components/TableSkeleton";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useQuery } from "@tanstack/react-query";
-import { PenBox, Trash2 } from "lucide-react";
+import { MoreHorizontal, MoreVertical, PenBox, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -57,17 +66,33 @@ const Piers = () => {
                       {pier.name}
                     </td>
                     <td className="px-6 py-3 text-end">
-                      <div className="inline-flex items-center gap-3">
-                        <Link to="/piers/edit/1">
-                          <PenBox size={21} className="ml-auto" />
-                        </Link>
-                        <div>
-                          <Trash2
-                            size={21}
-                            className="ml-auto text-red-600 hover:text-red-800 cursor-pointer"
-                          />
-                        </div>
-                      </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="focus:outline-none">
+                          <Button variant="ghost" size="icon">
+                            <MoreHorizontal />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <Link to={`/piers/edit/${pier.id}`} className="cursor-pointer">
+                            <DropdownMenuItem className="mb-1.5 flex items-center">
+                              <PenBox
+                                strokeWidth={2.2}
+                                className="me-1.5 font-medium text-gray-600"
+                              />
+                              <span>Edit</span>
+                            </DropdownMenuItem>
+                          </Link>
+                          <DropdownMenuItem>
+                            <div className="text-red-600 flex items-center">
+                              <Trash2
+                                strokeWidth={2.2}
+                                className="me-3.5 text-red-600"
+                              />
+                              <span>Delete</span>
+                            </div>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </td>
                   </tr>
                 ))}
