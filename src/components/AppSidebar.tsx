@@ -9,9 +9,11 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "./ui/sidebar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const AppSidebar = () => {
+  const location = useLocation();
+
   return (
     <Sidebar collapsible="icon" side="left">
       <SidebarHeader className="py-3">
@@ -36,15 +38,15 @@ const AppSidebar = () => {
       <SidebarContent className="mx-1.5">
         <SidebarMenu>
             <SidebarMenuItem className="mb-1">
-              <SidebarMenuButton asChild isActive={window.location.pathname === "/"}>
+                <SidebarMenuButton asChild isActive={location.pathname === "/"}>
                 <Link to="/">
                   <Home className="me-2" />
                   <span>Dashboard</span>
                 </Link>
-              </SidebarMenuButton>
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={window.location.pathname.startsWith("/piers")}>
+              <SidebarMenuButton asChild isActive={location.pathname.startsWith("/piers")}>
                 <Link to="/piers">
                   <Ship className="me-2" />
                   <span>Piers</span>
