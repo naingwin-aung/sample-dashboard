@@ -1,5 +1,6 @@
 import { ListPierQueryOption } from "@/api/piers";
 import ErrorTable from "@/components/ErrorTable";
+import TableSkeleton from "@/components/TableSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { PenBox, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -16,7 +17,7 @@ const Piers = () => {
         </button>
       </div>
 
-      {isPending && <div>Loading...</div>}
+      {isPending && <TableSkeleton />}
 
       {error && <ErrorTable />}
 
@@ -38,7 +39,7 @@ const Piers = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {data?.data.map((pier: any) => (
                 <tr key={pier.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
                     {pier.name}
                   </td>
                   <td className="px-6 py-4 text-end">
