@@ -67,7 +67,7 @@ const Piers = () => {
                     </td>
                     <td className="px-6 py-3 text-end">
                       <DropdownMenu>
-                        <DropdownMenuTrigger className="focus:outline-none">
+                        <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon">
                             <MoreHorizontal />
                           </Button>
