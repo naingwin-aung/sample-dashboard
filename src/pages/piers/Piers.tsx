@@ -21,7 +21,7 @@ const Piers = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-2xl font-medium">Piers</h3>
-        <button className="text-sm bg-gray-800 text-white px-5 py-2.5 rounded cursor-pointer hover:bg-gray-900 transition">
+        <button className="text-sm bg-gray-800 text-white px-5 py-2.5 rounded-md cursor-pointer hover:bg-gray-900 transition">
           Create Pier
         </button>
       </div>
