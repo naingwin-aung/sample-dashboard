@@ -7,12 +7,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useQuery } from "@tanstack/react-query";
-import { MoreHorizontal, MoreVertical, PenBox, Trash2 } from "lucide-react";
+import { MoreHorizontal, PenBox, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -51,7 +49,7 @@ const Piers = () => {
             <table className="min-w-full divide-y divide-gray-200 shadow-lg rounded-lg">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium tracking-wider text-gray-600">
+                  <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
                     Name
                   </th>
                   <th className="px-6 py-3 text-right text-sm font-medium tracking-wide text-gray-600">
@@ -74,7 +72,7 @@ const Piers = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <Link to={`/piers/edit/${pier.id}`} className="cursor-pointer">
-                            <DropdownMenuItem className="mb-1.5 flex items-center">
+                            <DropdownMenuItem className="mb-2 flex items-center">
                               <PenBox
                                 strokeWidth={2.2}
                                 className="me-1.5 font-medium text-gray-600"
