@@ -7,7 +7,7 @@ import { PenBox, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 10;
 
 const Piers = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,25 +38,25 @@ const Piers = () => {
 
       {data && data.data.length > 0 && (
         <>
-          <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-sm">
+          <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-xs">
             <table className="min-w-full divide-y divide-gray-200 shadow-lg rounded-lg">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium tracking-wider">
+                  <th className="px-6 py-3 text-left text-sm font-medium tracking-wider text-gray-600">
                     Name
                   </th>
-                  <th className="px-6 py-3 text-right text-sm font-medium tracking-wide">
-                    Actions
+                  <th className="px-6 py-3 text-right text-sm font-medium tracking-wide text-gray-600">
+                    Action
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {data.data.map((pier: Pier) => (
                   <tr key={pier.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-6 py-3 whitespace-nowrap text-sm">
                       {pier.name}
                     </td>
-                    <td className="px-6 py-4 text-end">
+                    <td className="px-6 py-3 text-end">
                       <div className="inline-flex items-center gap-3">
                         <Link to="/piers/edit/1">
                           <PenBox size={21} className="ml-auto" />

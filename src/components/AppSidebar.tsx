@@ -35,8 +35,8 @@ const AppSidebar = () => {
 
       <SidebarContent className="mx-1.5">
         <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+            <SidebarMenuItem className="mb-1">
+              <SidebarMenuButton asChild isActive={window.location.pathname === "/"}>
                 <Link to="/">
                   <Home className="me-2" />
                   <span>Dashboard</span>
@@ -44,7 +44,7 @@ const AppSidebar = () => {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild isActive={window.location.pathname.startsWith("/piers")}>
                 <Link to="/piers">
                   <Ship className="me-2" />
                   <span>Piers</span>
