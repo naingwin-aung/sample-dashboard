@@ -1,4 +1,4 @@
-import { Home } from "lucide-react";
+import { Home, Ship } from "lucide-react";
 import Image from "./global/Image";
 import {
   Sidebar,
@@ -40,6 +40,14 @@ const AppSidebar = () => {
                 <Link to="/">
                   <Home className="me-2" />
                   <span>Dashboard</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link to="/piers">
+                  <Ship className="me-2" />
+                  <span>Piers</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
