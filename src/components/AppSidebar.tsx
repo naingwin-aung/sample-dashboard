@@ -1,4 +1,4 @@
-import { Home, Sailboat, Ship } from "lucide-react";
+import { Home, LifeBuoy, Package, Sailboat, Ship } from "lucide-react";
 import Image from "./global/Image";
 import {
   Sidebar,
@@ -41,23 +41,43 @@ const AppSidebar = () => {
                 <SidebarMenuButton asChild isActive={location.pathname === "/"}>
                 <Link to="/">
                   <Home className="me-2" />
-                  <span>Dashboard</span>
+                  <span className="text-md">Dashboard</span>
                 </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>
+
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/piers")}>
                 <Link to="/piers">
-                  <Ship className="me-2" />
-                  <span>Piers</span>
+                  <LifeBuoy className="me-2" />
+                  <span className="text-md">Piers</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boat-types")}>
                 <Link to="/boat-types">
                   <Sailboat className="me-2" />
-                  <span>Boat Types</span>
+                  <span className="text-md">Boat Types</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boats")}>
+                <Link to="/boats">
+                  <Ship className="me-2" />
+                  <span className="text-md">Boats</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={location.pathname.startsWith("/products")}>
+                <Link to="/products">
+                  <Package className="me-2" />
+                  <span className="text-md">Products</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
