@@ -12,18 +12,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useQuery } from "@tanstack/react-query";
 import { MoreHorizontal, PenBox, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 10;
 
 const BoatTypes = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const[searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || ITEMS_PER_PAGE;
+
   const { data, isPending, error } = useQuery(
-    ListBoatTypeQueryOption(currentPage, ITEMS_PER_PAGE)
+    ListBoatTypeQueryOption(currentPage, limit)
   );
 
-  const totalPages = data ? Math.ceil(data.total / data.limit) : 0;
+  const setCurrentPage = (page: number) => {
+    setSearchParams((params) => {
+      params.set("page", String(page));
+      return params;
+    });
+  };
+
+  const totalPages = data ? Math.ceil(data.total / limit) : 0;
 
   return (
     <div>
