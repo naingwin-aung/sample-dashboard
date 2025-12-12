@@ -1,4 +1,4 @@
-import { ListPierQueryOption, type Pier } from "@/api/piers";
+import { ListBoatTypeQueryOption, type BoatType } from "@/api/boat-types";
 import TableError from "@/components/TableError";
 import TableNotFound from "@/components/TableNotFound";
 import TablePagination from "@/components/TablePagination";
@@ -17,10 +17,10 @@ import { Link } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 10;
 
-const Piers = () => {
+const BoatTypes = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isPending, error } = useQuery(
-    ListPierQueryOption(currentPage, ITEMS_PER_PAGE)
+    ListBoatTypeQueryOption(currentPage, ITEMS_PER_PAGE)
   );
 
   const totalPages = data ? Math.ceil(data.total / data.limit) : 0;
@@ -28,9 +28,9 @@ const Piers = () => {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h3 className="text-2xl font-medium">Piers</h3>
+        <h3 className="text-2xl font-medium">Boat Types</h3>
         <button className="text-sm bg-gray-800 text-white px-5 py-2.5 rounded-md cursor-pointer hover:bg-gray-900 transition">
-          Create Pier
+          Create Boat Type
         </button>
       </div>
 
@@ -39,7 +39,7 @@ const Piers = () => {
       {error && <TableError />}
 
       {data?.data.length === 0 && (
-        <TableNotFound>No Piers found.</TableNotFound>
+        <TableNotFound>No Boat Types found.</TableNotFound>
       )}
 
       {data && data.data.length > 0 && (
@@ -57,10 +57,10 @@ const Piers = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.data.map((pier: Pier) => (
-                  <tr key={pier.id}>
+                {data.data.map((type: BoatType) => (
+                  <tr key={type.id}>
                     <td className="px-6 py-3 whitespace-nowrap text-sm">
-                      {pier.name}
+                      {type.name}
                     </td>
                     <td className="px-6 py-3 text-end">
                       <DropdownMenu>
@@ -70,7 +70,7 @@ const Piers = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <Link to={`/piers/edit/${pier.id}`} className="cursor-pointer">
+                          <Link to={`/boat-types/edit/${type.id}`} className="cursor-pointer">
                             <DropdownMenuItem className="mb-2 flex items-center">
                               <PenBox
                                 strokeWidth={2.2}
@@ -110,4 +110,4 @@ const Piers = () => {
   );
 };
 
-export default Piers;
+export default BoatTypes;

@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import MainLayout from "./layouts/MainLayout";
 import NotFound from "./pages/NotFound";
 import Piers from "./pages/piers/Piers";
+import BoatTypes from "./pages/boat-types/BoatTypes";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path: "/piers",
         Component: Piers
+      },
+      {
+        path: "/boat-types",
+        Component: BoatTypes
       }
     ],
   },

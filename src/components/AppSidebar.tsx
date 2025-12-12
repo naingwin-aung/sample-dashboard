@@ -1,4 +1,4 @@
-import { Home, Ship } from "lucide-react";
+import { Home, Sailboat, Ship } from "lucide-react";
 import Image from "./global/Image";
 import {
   Sidebar,
@@ -50,6 +50,14 @@ const AppSidebar = () => {
                 <Link to="/piers">
                   <Ship className="me-2" />
                   <span>Piers</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boat-types")}>
+                <Link to="/boat-types">
+                  <Sailboat className="me-2" />
+                  <span>Boat Types</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
