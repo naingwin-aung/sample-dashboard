@@ -12,18 +12,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useQuery } from "@tanstack/react-query";
 import { MoreHorizontal, PenBox, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
-const ITEMS_PER_PAGE = 10;
+const DEFAULT_LIMIT = 10;
 
 const Piers = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || DEFAULT_LIMIT;
+
   const { data, isPending, error } = useQuery(
-    ListPierQueryOption(currentPage, ITEMS_PER_PAGE)
+    ListPierQueryOption(currentPage, limit)
   );
 
-  const totalPages = data ? Math.ceil(data.total / data.limit) : 0;
+  const setCurrentPage = (page: number) => {
+    setSearchParams((params) => {
+      params.set("page", String(page));
+      return params;
+    });
+  };
+
+  const totalPages = data ? Math.ceil(data.total / limit) : 0;
 
   return (
     <div>
@@ -101,7 +110,7 @@ const Piers = () => {
             currentPage={currentPage}
             totalPages={totalPages}
             totalItems={data.total}
-            itemsPerPage={ITEMS_PER_PAGE}
+            itemsPerPage={limit}
             onPageChange={setCurrentPage}
           />
         </>
