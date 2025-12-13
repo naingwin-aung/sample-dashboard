@@ -1,4 +1,4 @@
-import { ListPierQueryOption, type Pier } from "@/api/piers";
+import { deletePierQueryOption, ListPierQueryOption, type Pier } from "@/api/piers";
 import TableError from "@/components/TableError";
 import TableNotFound from "@/components/TableNotFound";
 import TablePagination from "@/components/TablePagination";
@@ -10,8 +10,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { MoreHorizontal, PenBox, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
 const DEFAULT_LIMIT = 10;
@@ -33,6 +34,10 @@ const Piers = () => {
   };
 
   const totalPages = data ? Math.ceil(data.total / limit) : 0;
+
+  const mutation = useMutation({
+    ...deletePierQueryOption()
+  });
 
   return (
     <div>
@@ -89,7 +94,7 @@ const Piers = () => {
                             </DropdownMenuItem>
                           </Link>
                           <DropdownMenuItem>
-                            <div className="text-red-600 flex items-center">
+                            <div onClick={() => mutation.mutate(pier.id)} className="text-red-600 flex items-center">
                               <Trash2
                                 strokeWidth={2.2}
                                 className="me-3.5 text-red-600"
