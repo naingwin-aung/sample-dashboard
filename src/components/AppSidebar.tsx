@@ -39,45 +39,45 @@ const AppSidebar = () => {
         <SidebarMenu>
             <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={location.pathname === "/"}>
-                <Link to="/" className="py-4.5">
+                <Link to="/" className="py-5">
                   <Home className="me-2" />
-                  <span className="text-[15px]">Dashboard</span>
+                  <span className="text-[14.5px] font-normal">Dashboard</span>
                 </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/piers")}>
-                <Link to="/piers" className="py-4.5">
+                <Link to="/piers" className="py-5">
                   <LifeBuoy className="me-2" />
-                  <span className="text-[15px]">Piers</span>
+                  <span className="text-[14.5px] font-normal">Piers</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boat-types")}>
-                <Link to="/boat-types" className="py-4.5">
+                <Link to="/boat-types" className="py-5">
                   <Sailboat className="me-2" />
-                  <span className="text-[15px]">Boat Types</span>
+                  <span className="text-[14.5px] font-normal">Boat Types</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boats")}>
-                <Link to="/boats" className="py-4.5">
+                <Link to="/boats" className="py-5">
                   <Ship className="me-2" />
-                  <span className="text-[15px]">Boats</span>
+                  <span className="text-[14.5px] font-normal">Boats</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/products")}>
-                <Link to="/products" className="py-4.5">
+                <Link to="/products" className="py-5">
                   <Package className="me-2" />
-                  <span className="text-[15px]">Products</span>
+                  <span className="text-[14.5px] font-normal">Products</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
