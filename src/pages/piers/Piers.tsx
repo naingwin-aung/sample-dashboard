@@ -1,4 +1,5 @@
 import { deletePierQueryOption, ListPierQueryOption, type Pier } from "@/api/piers";
+import TableButton from "@/components/TableButton";
 import TableError from "@/components/TableError";
 import TableNotFound from "@/components/TableNotFound";
 import TablePagination from "@/components/TablePagination";
@@ -46,9 +47,7 @@ const Piers = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-2xl font-medium">Piers</h3>
-        <Link to="/piers/create" className="text-sm bg-gray-800 text-white px-5 py-2.5 rounded-md cursor-pointer hover:bg-gray-900 transition">
-          Create Pier
-        </Link>
+        <TableButton to="/piers/create">Create Pier</TableButton>
       </div>
 
       {isPending && <TableSkeleton />}

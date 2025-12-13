@@ -1,4 +1,9 @@
-import { deleteBoatTypeQueryOption, ListBoatTypeQueryOption, type BoatType } from "@/api/boat-types";
+import {
+  deleteBoatTypeQueryOption,
+  ListBoatTypeQueryOption,
+  type BoatType,
+} from "@/api/boat-types";
+import TableButton from "@/components/TableButton";
 import TableError from "@/components/TableError";
 import TableNotFound from "@/components/TableNotFound";
 import TablePagination from "@/components/TablePagination";
@@ -17,7 +22,7 @@ import { Link, useSearchParams } from "react-router-dom";
 const ITEMS_PER_PAGE = 10;
 
 const BoatTypes = () => {
-  const[searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
   const limit = Number(searchParams.get("limit")) || ITEMS_PER_PAGE;
   const queryClient = useQueryClient();
@@ -38,7 +43,7 @@ const BoatTypes = () => {
   const mutation = useMutation({
     ...deleteBoatTypeQueryOption(),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['boat-types'] });
+      queryClient.invalidateQueries({ queryKey: ["boat-types"] });
     },
   });
 
@@ -46,9 +51,7 @@ const BoatTypes = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-2xl font-medium">Boat Types</h3>
-        <Link to="/boat-types/create" className="text-sm bg-gray-800 text-white px-5 py-2.5 rounded-md cursor-pointer hover:bg-gray-900 transition">
-          Create Boat Type
-        </Link>
+        <TableButton to="/boat-types/create">Create Boat Type</TableButton>
       </div>
 
       {isPending && <TableSkeleton />}
@@ -82,12 +85,19 @@ const BoatTypes = () => {
                     <td className="px-6 py-3 text-end">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="cursor-pointer">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="cursor-pointer"
+                          >
                             <MoreHorizontal />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <Link to={`/boat-types/edit/${type.id}`} className="cursor-pointer">
+                          <Link
+                            to={`/boat-types/edit/${type.id}`}
+                            className="cursor-pointer"
+                          >
                             <DropdownMenuItem className="mb-2 flex items-center">
                               <PenBox
                                 strokeWidth={2.2}
@@ -97,7 +107,10 @@ const BoatTypes = () => {
                             </DropdownMenuItem>
                           </Link>
                           <DropdownMenuItem>
-                            <div onClick={() => mutation.mutate(type.id)} className="text-red-600 flex items-center">
+                            <div
+                              onClick={() => mutation.mutate(type.id)}
+                              className="text-red-600 flex items-center"
+                            >
                               <Trash2
                                 strokeWidth={2.2}
                                 className="me-3.5 text-red-600"
