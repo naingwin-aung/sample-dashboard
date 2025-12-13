@@ -1,12 +1,24 @@
+import { createPierQueryOption } from "@/api/piers";
 import FormButton from "@/components/global/FormButton";
 import FormInput from "@/components/global/FormInput";
+import { useMutation } from "@tanstack/react-query";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type FormFields = {
   name: string;
 };
 
 const CreatePier = () => {
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    ...createPierQueryOption(),
+    onSuccess: () => {
+      navigate("/piers");
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -16,11 +28,8 @@ const CreatePier = () => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      throw new Error();
-      console.log(data);
+      mutation.mutate({ name: data.name });
     } catch (error) {
-      console.error(error);
       setError("name", {
         type: "manual",
         message: "Failed to create pier. Please try again.",
@@ -45,8 +54,15 @@ const CreatePier = () => {
           <FormInput
             id="name"
             placeholder="Enter name"
-            {...register("name")}
+            {...register("name", {
+              required: "Name is required",
+            })}
           />
+          {errors.name && (
+            <div className="text-red-500 text-sm mt-1.5">
+              {errors.name.message}
+            </div>
+          )}
         </div>
         <div className="flex justify-end">
           <FormButton disabled={isSubmitting}>Save</FormButton>

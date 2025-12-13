@@ -15,6 +15,11 @@ export interface PiersResponse {
     data: Pier[];
 }
 
+export interface FormPier {
+    name: string;
+}
+
+// listing
 export const ListPierQueryOption = (page: number, limit: number) => {
     return {
         queryKey: ['piers', page, limit],
@@ -33,3 +38,14 @@ const fetchPiers = async (page: number, limit: number): Promise<PiersResponse> =
 
     return response.data.data;
 }
+
+export const createPierQueryOption = () => {
+    return {
+        mutationFn: (newPier : FormPier) => createPier(newPier),
+    }
+}
+
+const createPier = async (newPier: FormPier) => {
+    const response = await api.post(`/admin/piers`, newPier);
+    return response.data;
+};
