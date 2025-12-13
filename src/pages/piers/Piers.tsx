@@ -10,9 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MoreHorizontal, PenBox, Trash2 } from "lucide-react";
-import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
 const DEFAULT_LIMIT = 10;
@@ -21,6 +20,7 @@ const Piers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
   const limit = Number(searchParams.get("limit")) || DEFAULT_LIMIT;
+  const queryClient = useQueryClient();
 
   const { data, isPending, error } = useQuery(
     ListPierQueryOption(currentPage, limit)
@@ -36,7 +36,10 @@ const Piers = () => {
   const totalPages = data ? Math.ceil(data.total / limit) : 0;
 
   const mutation = useMutation({
-    ...deletePierQueryOption()
+    ...deletePierQueryOption(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['piers'] });
+    },
   });
 
   return (
