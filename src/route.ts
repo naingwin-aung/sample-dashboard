@@ -7,6 +7,7 @@ import BoatTypes from "./pages/boat-types/BoatTypes";
 import Boats from "./pages/boats/Boats";
 import Products from "./pages/products/Products";
 import CreatePier from "./pages/piers/CreatePier";
+import EditPier from "./pages/piers/EditPier";
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +28,11 @@ export const router = createBrowserRouter([
           {
             path: "create",
             Component: CreatePier,
-          }
+          },
+          {
+            path: "edit/:id",
+            Component: EditPier,
+          },
         ],
       },
       {
