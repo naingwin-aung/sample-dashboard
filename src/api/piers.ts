@@ -51,13 +51,13 @@ const createPier = async (newPier: FormPier) => {
     return response.data;
 };
 
+// delete
 export const deletePierQueryOption = () => {
     return {
         mutationFn: (pierId : number) => deletePier(pierId),
     }
 }
 
-// delete
 const deletePier = async (pierId: number) => {
     const response = await api.delete(`/admin/piers/${pierId}`);
     return response.data;

@@ -1,4 +1,4 @@
-import { ListBoatTypeQueryOption, type BoatType } from "@/api/boat-types";
+import { deleteBoatTypeQueryOption, ListBoatTypeQueryOption, type BoatType } from "@/api/boat-types";
 import TableError from "@/components/TableError";
 import TableNotFound from "@/components/TableNotFound";
 import TablePagination from "@/components/TablePagination";
@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MoreHorizontal, PenBox, Trash2 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 
@@ -20,6 +20,7 @@ const BoatTypes = () => {
   const[searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
   const limit = Number(searchParams.get("limit")) || ITEMS_PER_PAGE;
+  const queryClient = useQueryClient();
 
   const { data, isPending, error } = useQuery(
     ListBoatTypeQueryOption(currentPage, limit)
@@ -34,13 +35,20 @@ const BoatTypes = () => {
 
   const totalPages = data ? Math.ceil(data.total / limit) : 0;
 
+  const mutation = useMutation({
+    ...deleteBoatTypeQueryOption(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['boat-types'] });
+    },
+  });
+
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-2xl font-medium">Boat Types</h3>
-        <button className="text-sm bg-gray-800 text-white px-5 py-2.5 rounded-md cursor-pointer hover:bg-gray-900 transition">
+        <Link to="/boat-types/create" className="text-sm bg-gray-800 text-white px-5 py-2.5 rounded-md cursor-pointer hover:bg-gray-900 transition">
           Create Boat Type
-        </button>
+        </Link>
       </div>
 
       {isPending && <TableSkeleton />}
@@ -89,7 +97,7 @@ const BoatTypes = () => {
                             </DropdownMenuItem>
                           </Link>
                           <DropdownMenuItem>
-                            <div className="text-red-600 flex items-center">
+                            <div onClick={() => mutation.mutate(type.id)} className="text-red-600 flex items-center">
                               <Trash2
                                 strokeWidth={2.2}
                                 className="me-3.5 text-red-600"

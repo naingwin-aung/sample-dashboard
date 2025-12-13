@@ -32,3 +32,15 @@ const fetchBoatTypes = async (page: number, limit: number): Promise<BoatTypesRes
 
     return response.data.data;
 }
+
+// delete
+export const deleteBoatTypeQueryOption = () => {
+    return {
+        mutationFn: (boatTypeId : number) => deleteBoatType(boatTypeId),
+    }
+}
+
+const deleteBoatType = async (boatTypeId: number) => {
+    const response = await api.delete(`/admin/boat-types/${boatTypeId}`);
+    return response.data;
+};
