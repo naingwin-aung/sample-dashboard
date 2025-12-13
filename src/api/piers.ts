@@ -39,6 +39,7 @@ const fetchPiers = async (page: number, limit: number): Promise<PiersResponse> =
     return response.data.data;
 }
 
+// create
 export const createPierQueryOption = () => {
     return {
         mutationFn: (newPier : FormPier) => createPier(newPier),
@@ -56,7 +57,34 @@ export const deletePierQueryOption = () => {
     }
 }
 
+// delete
 const deletePier = async (pierId: number) => {
     const response = await api.delete(`/admin/piers/${pierId}`);
+    return response.data;
+};
+
+// show
+export const showPierQueryOption = (pierId: number) => {
+    return {
+        queryKey: ['piers', pierId],
+        queryFn: () => fetchPier(pierId),
+        enabled: !!pierId,
+    }
+}
+
+const fetchPier = async (pierId: number): Promise<Pier> => {
+    const response = await api.get(`/admin/piers/${pierId}`);
+    return response.data.data.pier;
+};
+
+// update
+export const updatePierQueryOption = () => {
+    return {
+        mutationFn: ({ pierId, data }: { pierId: number; data: FormPier }) => updatePier(pierId, data),
+    }
+}
+
+const updatePier = async (pierId: number, data: FormPier) => {
+    const response = await api.put(`/admin/piers/${pierId}`, data);
     return response.data;
 };

@@ -1,9 +1,10 @@
-import { createPierQueryOption } from "@/api/piers";
+import { createPierQueryOption, showPierQueryOption, updatePierQueryOption } from "@/api/piers";
 import FormButton from "@/components/global/FormButton";
 import FormInput from "@/components/global/FormInput";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type FormFields = {
   name: string;
@@ -11,9 +12,23 @@ type FormFields = {
 
 const PierForm = ({ isCreate }: { isCreate: boolean }) => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const pierId = id ? Number(id) : 0;
 
-  const mutation = useMutation({
+  const { data: pier, isPending: isLoadingPier } = useQuery({
+    ...showPierQueryOption(pierId),
+    enabled: !isCreate && !!pierId,
+  });
+
+  const createMutation = useMutation({
     ...createPierQueryOption(),
+    onSuccess: () => {
+      navigate("/piers");
+    },
+  });
+
+  const updateMutation = useMutation({
+    ...updatePierQueryOption(),
     onSuccess: () => {
       navigate("/piers");
     },
@@ -23,19 +38,35 @@ const PierForm = ({ isCreate }: { isCreate: boolean }) => {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
 
+  useEffect(() => {
+    if (pier) {
+      reset({ name: pier.name });
+    }
+  }, [pier, reset]);
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      mutation.mutate({ name: data.name });
+      if (isCreate) {
+        createMutation.mutate({ name: data.name });
+      } else {
+        updateMutation.mutate({ pierId, data: { name: data.name } });
+      }
     } catch (error) {
-      setError("name", {
+      setError("root", {
         type: "manual",
-        message: "Failed to create pier. Please try again.",
+        message: `Failed to ${isCreate ? 'create' : 'update'} pier. Please try again.`,
       });
     }
   };
+
+  if (!isCreate && isLoadingPier) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       {errors.root && (
