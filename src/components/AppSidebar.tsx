@@ -37,9 +37,9 @@ const AppSidebar = () => {
 
       <SidebarContent className="mx-1.5">
         <SidebarMenu>
-            <SidebarMenuItem className="mb-1">
+            <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={location.pathname === "/"}>
-                <Link to="/">
+                <Link to="/" className="py-4.5">
                   <Home className="me-2" />
                   <span className="text-md">Dashboard</span>
                 </Link>
@@ -48,7 +48,7 @@ const AppSidebar = () => {
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/piers")}>
-                <Link to="/piers">
+                <Link to="/piers" className="py-4.5">
                   <LifeBuoy className="me-2" />
                   <span className="text-md">Piers</span>
                 </Link>
@@ -57,7 +57,7 @@ const AppSidebar = () => {
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boat-types")}>
-                <Link to="/boat-types">
+                <Link to="/boat-types" className="py-4.5">
                   <Sailboat className="me-2" />
                   <span className="text-md">Boat Types</span>
                 </Link>
@@ -66,7 +66,7 @@ const AppSidebar = () => {
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boats")}>
-                <Link to="/boats">
+                <Link to="/boats" className="py-4.5">
                   <Ship className="me-2" />
                   <span className="text-md">Boats</span>
                 </Link>
@@ -75,7 +75,7 @@ const AppSidebar = () => {
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/products")}>
-                <Link to="/products">
+                <Link to="/products" className="py-4.5">
                   <Package className="me-2" />
                   <span className="text-md">Products</span>
                 </Link>
