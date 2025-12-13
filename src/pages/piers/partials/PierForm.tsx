@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 type FormFields = {
   name: string;
@@ -55,6 +56,8 @@ const PierForm = ({ isCreate }: { isCreate: boolean }) => {
       } else {
         updateMutation.mutate({ pierId, data: { name: data.name } });
       }
+
+      toast.success(`Pier ${isCreate ? 'created' : 'updated'} successfully.`);
     } catch (error) {
       setError("root", {
         type: "manual",
