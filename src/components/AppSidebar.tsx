@@ -41,7 +41,7 @@ const AppSidebar = () => {
                 <SidebarMenuButton asChild isActive={location.pathname === "/"}>
                 <Link to="/" className="py-4.5">
                   <Home className="me-2" />
-                  <span className="text-md">Dashboard</span>
+                  <span className="text-[15px]">Dashboard</span>
                 </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>
@@ -50,7 +50,7 @@ const AppSidebar = () => {
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/piers")}>
                 <Link to="/piers" className="py-4.5">
                   <LifeBuoy className="me-2" />
-                  <span className="text-md">Piers</span>
+                  <span className="text-[15px]">Piers</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -59,7 +59,7 @@ const AppSidebar = () => {
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boat-types")}>
                 <Link to="/boat-types" className="py-4.5">
                   <Sailboat className="me-2" />
-                  <span className="text-md">Boat Types</span>
+                  <span className="text-[15px]">Boat Types</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -68,7 +68,7 @@ const AppSidebar = () => {
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/boats")}>
                 <Link to="/boats" className="py-4.5">
                   <Ship className="me-2" />
-                  <span className="text-md">Boats</span>
+                  <span className="text-[15px]">Boats</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -77,7 +77,7 @@ const AppSidebar = () => {
               <SidebarMenuButton asChild isActive={location.pathname.startsWith("/products")}>
                 <Link to="/products" className="py-4.5">
                   <Package className="me-2" />
-                  <span className="text-md">Products</span>
+                  <span className="text-[15px]">Products</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

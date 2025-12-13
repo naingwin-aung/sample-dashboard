@@ -8,7 +8,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       <input
         ref={ref}
         type="text"
-        className={`w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-0 outline-none ${className ?? ""}`}
+        className={`w-full px-2.5 py-1.5 border border-gray-200 rounded-md focus:outline-none focus:ring-0 outline-none placeholder:text-sm ${className ?? ""}`}
         {...props}
       />
     );

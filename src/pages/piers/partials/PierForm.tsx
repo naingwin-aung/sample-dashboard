@@ -76,7 +76,7 @@ const PierForm = ({ isCreate }: { isCreate: boolean }) => {
         <div className="mb-6">
           <label
             htmlFor="name"
-            className="block mb-2.5 font-medium text-gray-700"
+            className="block mb-2.5 text-gray-700"
           >
             Name
           </label>
