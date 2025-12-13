@@ -6,6 +6,7 @@ import Piers from "./pages/piers/Piers";
 import BoatTypes from "./pages/boat-types/BoatTypes";
 import Boats from "./pages/boats/Boats";
 import Products from "./pages/products/Products";
+import CreatePier from "./pages/piers/CreatePier";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +19,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "/piers",
-        Component: Piers
+        children: [
+          {
+            index: true,
+            Component: Piers,
+          },
+          {
+            path: "create",
+            Component: CreatePier,
+          }
+        ],
       },
       {
         path: "/boat-types",
