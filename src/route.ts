@@ -10,6 +10,7 @@ import CreatePier from "./pages/piers/CreatePier";
 import EditPier from "./pages/piers/EditPier";
 import CreateBoatType from "./pages/boat-types/CreateBoatType";
 import EditBoatType from "./pages/boat-types/EditBoatType";
+import CreateProduct from "./pages/products/CreateProduct";
 
 export const router = createBrowserRouter([
   {
@@ -60,7 +61,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "/products",
-        Component: Products
+        children: [
+          {
+            index: true,
+            Component: Products,
+          },
+          {
+            path: "create",
+            Component: CreateProduct,
+          },
+        ]
       }
     ],
   },

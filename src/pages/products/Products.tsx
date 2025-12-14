@@ -1,4 +1,5 @@
 import { ListProductQueryOption, type Product } from "@/api/products";
+import TableButton from "@/components/TableButton";
 import TableError from "@/components/TableError";
 import TableNotFound from "@/components/TableNotFound";
 import TablePagination from "@/components/TablePagination";
@@ -38,9 +39,7 @@ const Products = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-2xl font-medium">Products</h3>
-        <button className="text-sm bg-gray-800 text-white px-5 py-2.5 rounded-md cursor-pointer hover:bg-gray-900 transition">
-          Create Product
-        </button>
+        <TableButton to="/products/create">Create Product</TableButton>
       </div>
 
       {isPending && <TableSkeleton />}
