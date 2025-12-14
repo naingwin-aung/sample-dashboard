@@ -143,9 +143,6 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                           <TabsList>
                             <TabsTrigger value="schedule">Schedule</TabsTrigger>
                             <TabsTrigger value="tickets">Tickets</TabsTrigger>
-                            <TabsTrigger value="additional_options">
-                              Additional options
-                            </TabsTrigger>
                           </TabsList>
                           <TabsContent value="schedule">
                             <div className="flex items-center gap-4 mt-3 mb-7">
@@ -301,10 +298,15 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                                   </table>
                                 </div>
                               </div>
+                              <div className="flex justify-between items-center">
+                                <Button className="cursor-pointer">
+                                  Previous
+                                </Button>
+                                <Button className="cursor-pointer">
+                                  Next
+                                </Button>
+                              </div>
                             </div>
-                          </TabsContent>
-                          <TabsContent value="additional_options">
-                            Set up 2FA here.
                           </TabsContent>
                         </Tabs>
                       </DialogHeader>
