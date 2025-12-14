@@ -29,6 +29,25 @@ import { Button } from "@/components/ui/button";
 type FormFields = {
   name: string;
   piers: string[] | number[];
+  description: string;
+  boats: Array<{
+    id: string | number;
+    boat_id: string | number;
+    start_date: string;
+    end_date: string;
+    start_time: string;
+    end_time: string;
+    tickets: Array<{
+      id: string | number;
+      name: string;
+      short_description: string;
+      options: Array<{
+        option_name: string;
+        market_price: number;
+        net_price: number;
+      }>;
+    }>;
+  }>;
 };
 
 const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
