@@ -12,10 +12,12 @@ import {
   MultiSelectValue,
 } from "@/components/ui/multi-select";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { allPiersQueryOption } from "@/api/piers";
 
 type FormFields = {
   name: string;
-  piers: string[];
+  piers: string[] | number[];
 };
 
 const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
@@ -27,6 +29,10 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     control,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
+
+  const { data: all_piers } = useQuery({
+    ...allPiersQueryOption(),
+  });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -42,7 +48,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
   };
 
   useEffect(() => {
-    reset({ name: "hello", piers: ["next.js", "react"] });
+    reset({ name: "hello", piers: ["19", "5"] });
   }, [reset]);
 
   return (
@@ -51,7 +57,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
         <div className="text-red-500 text-sm mt-1.5">{errors.root.message}</div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex items-center gap-4">
+        <div className="flex gap-4">
           <div className="w-1/2 mb-6">
             <FormLabel htmlFor="name">Name</FormLabel>
             <FormInput
@@ -72,22 +78,26 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
               render={({ field }) => (
                 <MultiSelect
                   onValuesChange={field.onChange}
-                  defaultValues={["next.js", "react"]}
+                  defaultValues={["19", "5"]}
                   value={field.value}
                 >
                   <MultiSelectTrigger className="w-full">
-                    <MultiSelectValue placeholder="Select frameworks..." />
+                    <MultiSelectValue
+                      overflowBehavior="wrap"
+                      placeholder="Select piers..."
+                    />
                   </MultiSelectTrigger>
                   <MultiSelectContent>
                     <MultiSelectGroup>
-                      <MultiSelectItem value="next.js">Next.js</MultiSelectItem>
-                      <MultiSelectItem value="sveltekit">
-                        SvelteKit
-                      </MultiSelectItem>
-                      <MultiSelectItem value="astro">Astro</MultiSelectItem>
-                      <MultiSelectItem value="vue">Vue.js</MultiSelectItem>
-                      <MultiSelectItem value="react">React</MultiSelectItem>
-                      <MultiSelectItem value="angular">Angular</MultiSelectItem>
+                      {all_piers?.map((pier) => (
+                        <MultiSelectItem
+                          className="mb-0.5"
+                          key={pier.id}
+                          value={pier.id.toString()}
+                        >
+                          {pier.name}
+                        </MultiSelectItem>
+                      ))}
                     </MultiSelectGroup>
                   </MultiSelectContent>
                 </MultiSelect>

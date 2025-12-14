@@ -88,3 +88,16 @@ const updatePier = async (pierId: number, data: FormPier) => {
     const response = await api.put(`/admin/piers/${pierId}`, data);
     return response.data;
 };
+
+// all piers
+export const allPiersQueryOption = () => {
+    return {
+        queryKey: ['all_piers'],
+        queryFn: () => fetchAllPiers(),
+    }
+}
+
+const fetchAllPiers = async (): Promise<Pier[]> => {
+    const response = await api.get(`/admin/all/piers`);
+    return response.data.data.data;
+}
