@@ -302,9 +302,9 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                                 <Button className="cursor-pointer">
                                   Previous
                                 </Button>
-                                <Button className="cursor-pointer">
-                                  Next
-                                </Button>
+                                <FormButton>
+                                  Save
+                                </FormButton>
                               </div>
                             </div>
                           </TabsContent>
