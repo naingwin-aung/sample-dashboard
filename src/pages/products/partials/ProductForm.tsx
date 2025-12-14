@@ -2,7 +2,7 @@ import FormButton from "@/components/global/FormButton";
 import FormError from "@/components/global/FormError";
 import FormInput from "@/components/global/FormInput";
 import FormLabel from "@/components/global/FormLabel";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import {
   MultiSelect,
   MultiSelectContent,
@@ -11,6 +11,7 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from "@/components/ui/multi-select";
+import { useEffect } from "react";
 
 type FormFields = {
   name: string;
@@ -22,6 +23,8 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     register,
     handleSubmit,
     setError,
+    reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
 
@@ -37,6 +40,10 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
       });
     }
   };
+
+  useEffect(() => {
+    reset({ name: "hello", piers: ["next.js", "react"] });
+  }, [reset]);
 
   return (
     <div>
@@ -59,21 +66,33 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
 
           <div className="w-1/2 mb-6">
             <FormLabel htmlFor="piers">Piers</FormLabel>
-            <MultiSelect>
-              <MultiSelectTrigger className="w-full">
-                <MultiSelectValue placeholder="Select frameworks..." />
-              </MultiSelectTrigger>
-              <MultiSelectContent>
-                <MultiSelectGroup>
-                  <MultiSelectItem value="next.js">Next.js</MultiSelectItem>
-                  <MultiSelectItem value="sveltekit">SvelteKit</MultiSelectItem>
-                  <MultiSelectItem value="astro">Astro</MultiSelectItem>
-                  <MultiSelectItem value="vue">Vue.js</MultiSelectItem>
-                  <MultiSelectItem value="react">React</MultiSelectItem>
-                  <MultiSelectItem value="angular">Angular</MultiSelectItem>
-                </MultiSelectGroup>
-              </MultiSelectContent>
-            </MultiSelect>
+            <Controller
+              name="piers"
+              control={control}
+              render={({ field }) => (
+                <MultiSelect
+                  onValuesChange={field.onChange}
+                  defaultValues={["next.js", "react"]}
+                  value={field.value}
+                >
+                  <MultiSelectTrigger className="w-full">
+                    <MultiSelectValue placeholder="Select frameworks..." />
+                  </MultiSelectTrigger>
+                  <MultiSelectContent>
+                    <MultiSelectGroup>
+                      <MultiSelectItem value="next.js">Next.js</MultiSelectItem>
+                      <MultiSelectItem value="sveltekit">
+                        SvelteKit
+                      </MultiSelectItem>
+                      <MultiSelectItem value="astro">Astro</MultiSelectItem>
+                      <MultiSelectItem value="vue">Vue.js</MultiSelectItem>
+                      <MultiSelectItem value="react">React</MultiSelectItem>
+                      <MultiSelectItem value="angular">Angular</MultiSelectItem>
+                    </MultiSelectGroup>
+                  </MultiSelectContent>
+                </MultiSelect>
+              )}
+            />
             {errors.piers && <FormError message={errors.piers.message} />}
           </div>
         </div>
