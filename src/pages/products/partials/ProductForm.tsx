@@ -14,6 +14,8 @@ import {
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { allPiersQueryOption } from "@/api/piers";
+import FormTextArea from "@/components/global/FormTextArea";
+import { PenBox, Plus, Trash2 } from "lucide-react";
 
 type FormFields = {
   name: string;
@@ -57,7 +59,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
         <div className="text-red-500 text-sm mt-1.5">{errors.root.message}</div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex gap-4">
+        <div className="flex gap-4 mb-5">
           <div className="w-1/2 mb-6">
             <FormLabel htmlFor="name">Name</FormLabel>
             <FormInput
@@ -79,7 +81,6 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 <MultiSelect
                   onValuesChange={field.onChange}
                   defaultValues={["19", "5"]}
-                  value={field.value}
                 >
                   <MultiSelectTrigger className="w-full">
                     <MultiSelectValue
@@ -105,6 +106,46 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
             />
             {errors.piers && <FormError message={errors.piers.message} />}
           </div>
+        </div>
+
+        <div className="mb-5">
+          <FormLabel htmlFor="description">Description</FormLabel>
+          <FormTextArea></FormTextArea>
+        </div>
+
+        <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-xs mb-5">
+          <table className="min-w-full divide-y divide-gray-200 shadow-lg rounded-lg">
+            <thead>
+              <tr>
+                <th className="w-0.5">
+                  <Plus
+                    size={19}
+                    className="ms-3.5 text-gray-600 cursor-pointer"
+                  />
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-right text-sm font-medium tracking-wide text-gray-600">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="w-0.5"></td>
+                <td className="px-6 py-3 whitespace-nowrap text-sm">
+                  Sample Boat
+                </td>
+                <td className="px-6 py-3 text-end">
+                  <span>
+                    <PenBox size={18} strokeWidth={2.1} className="inline me-4 text-gray-600 cursor-pointer" />
+                    <Trash2 size={18} strokeWidth={2.1} className="inline text-red-600 cursor-pointer" />
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <div className="flex justify-end">
