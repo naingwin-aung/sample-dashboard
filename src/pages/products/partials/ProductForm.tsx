@@ -11,11 +11,20 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from "@/components/ui/multi-select";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { allPiersQueryOption } from "@/api/piers";
 import FormTextArea from "@/components/global/FormTextArea";
 import { PenBox, Plus, Trash2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 
 type FormFields = {
   name: string;
@@ -35,6 +44,8 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
   const { data: all_piers } = useQuery({
     ...allPiersQueryOption(),
   });
+
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -118,10 +129,86 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
             <thead>
               <tr>
                 <th className="w-0.5">
-                  <Plus
-                    size={19}
-                    className="ms-3.5 text-gray-600 cursor-pointer"
-                  />
+                  <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                    <DialogTrigger>
+                      <Plus
+                        size={19}
+                        className="ms-2.5 text-gray-600 cursor-pointer"
+                      />
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-5xl">
+                      <DialogHeader>
+                        <DialogTitle className="mb-5">Add Boat</DialogTitle>
+                        <Tabs defaultValue="schedule">
+                          <TabsList>
+                            <TabsTrigger value="schedule">Schedule</TabsTrigger>
+                            <TabsTrigger value="tickets">Tickets</TabsTrigger>
+                            <TabsTrigger value="additional_options">
+                              Additional options
+                            </TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="schedule">
+                            <div className="flex items-center gap-4 mt-2 mb-7">
+                              <div className="w-1/3">
+                                <FormLabel htmlFor="boat">Boat</FormLabel>
+                                <FormInput
+                                  id="boat"
+                                  placeholder="Select boat"
+                                />
+                              </div>
+                              <div className="w-1/3">
+                                <FormLabel htmlFor="start_date">
+                                  Available start date
+                                </FormLabel>
+                                <FormInput
+                                  id="start_date"
+                                  placeholder="Select start date"
+                                />
+                              </div>
+                              <div className="w-1/3">
+                                <FormLabel htmlFor="end_date">
+                                  Available end date
+                                </FormLabel>
+                                <FormInput
+                                  id="end_date"
+                                  placeholder="Select end date"
+                                />
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-4 mt-2">
+                              <div className="w-1/2">
+                                <FormLabel htmlFor="start_time">
+                                  Start time
+                                </FormLabel>
+                                <FormInput
+                                  id="start_time"
+                                  placeholder="Select start time"
+                                />
+                              </div>
+                              <div className="w-1/2">
+                                <FormLabel htmlFor="end_time">
+                                  End time
+                                </FormLabel>
+                                <FormInput
+                                  id="end_time"
+                                  placeholder="Select end time"
+                                />
+                              </div>
+                            </div>
+                            <div className="text-end">
+                              <Button className="mt-6 cursor-pointer">Next</Button>
+                            </div>
+                          </TabsContent>
+                          <TabsContent value="tickets">
+                            Change your password here.
+                          </TabsContent>
+                          <TabsContent value="additional_options">
+                            Set up 2FA here.
+                          </TabsContent>
+                        </Tabs>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
                   Name
@@ -139,8 +226,16 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 </td>
                 <td className="px-6 py-3 text-end">
                   <span>
-                    <PenBox size={18} strokeWidth={2.1} className="inline me-4 text-gray-600 cursor-pointer" />
-                    <Trash2 size={18} strokeWidth={2.1} className="inline text-red-600 cursor-pointer" />
+                    <PenBox
+                      size={18}
+                      strokeWidth={2.1}
+                      className="inline me-4 text-gray-600 cursor-pointer"
+                    />
+                    <Trash2
+                      size={18}
+                      strokeWidth={2.1}
+                      className="inline text-red-600 cursor-pointer"
+                    />
                   </span>
                 </td>
               </tr>
