@@ -148,7 +148,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                             </TabsTrigger>
                           </TabsList>
                           <TabsContent value="schedule">
-                            <div className="flex items-center gap-4 mt-2 mb-7">
+                            <div className="flex items-center gap-4 mt-3 mb-7">
                               <div className="w-1/3">
                                 <FormLabel htmlFor="boat">Boat</FormLabel>
                                 <FormInput
@@ -196,11 +196,112 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                               </div>
                             </div>
                             <div className="text-end">
-                              <Button className="mt-6 cursor-pointer">Next</Button>
+                              <Button className="mt-6 cursor-pointer">
+                                Next
+                              </Button>
                             </div>
                           </TabsContent>
                           <TabsContent value="tickets">
-                            Change your password here.
+                            <div className="mt-3">
+                              <div className="mb-4 flex items-center text-gray-600 cursor-pointer border border-dashed border-green-400 rounded p-2 w-max">
+                                <Plus
+                                  size={18}
+                                  className="me-1.5 text-green-500 cursor-pointer"
+                                />
+                                <span className="text-sm text-green-500">
+                                  Add Ticket
+                                </span>
+                              </div>
+                              <div className="border border-gray-200 rounded-md p-4 mb-5">
+                                <div className="flex justify-end">
+                                  <div className="border border-red-600 rounded p-1 hover:border-red-700">
+                                    <Trash2
+                                      size={18}
+                                      className=" text-red-600 hover:text-red-700 cursor-pointer"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                  <div className="w-1/2">
+                                    <FormLabel htmlFor="name">Name</FormLabel>
+                                    <FormInput
+                                      id="name"
+                                      placeholder="Enter name"
+                                    />
+                                  </div>
+
+                                  <div className="w-1/2">
+                                    <FormLabel htmlFor="short_description">
+                                      Short description
+                                    </FormLabel>
+                                    <FormInput
+                                      id="short_description"
+                                      placeholder="Enter short description"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-xs mb-5 mt-6">
+                                  <table className="min-w-full divide-y divide-gray-200 shadow-lg rounded-lg">
+                                    <thead>
+                                      <tr>
+                                        <th className="w-0.5">
+                                          <Plus
+                                            size={19}
+                                            className="ms-2.5 text-gray-600 cursor-pointer"
+                                          />
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                                          Options
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                                          Market selling price
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                                          Net price
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-sm font-medium tracking-wide text-gray-600">
+                                          Action
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                      <tr>
+                                        <td className="w-0.5"></td>
+                                        <td className="px-6 py-3 whitespace-nowrap text-sm">
+                                          <FormInput
+                                            id="option_name"
+                                            placeholder="Enter option name"
+                                          />
+                                        </td>
+                                        <td className="px-6 py-3 whitespace-nowrap text-sm">
+                                          <FormInput
+                                            id="market_price"
+                                            placeholder="Enter market selling price"
+                                          />
+                                        </td>
+                                        <td className="px-6 py-3 whitespace-nowrap text-sm">
+                                          <FormInput
+                                            id="net_price"
+                                            placeholder="Enter net price"
+                                          />
+                                        </td>
+                                        <td className="px-6 py-3 text-end">
+                                          <span>
+                                            <Trash2
+                                              size={18}
+                                              strokeWidth={2.1}
+                                              className="inline text-red-600 cursor-pointer"
+                                            />
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
                           </TabsContent>
                           <TabsContent value="additional_options">
                             Set up 2FA here.
