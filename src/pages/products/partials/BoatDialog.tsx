@@ -18,8 +18,9 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import type { FormFields } from "./ProductForm";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TicketItem from "./TicketItem";
+import { Button } from "@/components/ui/button";
 
 export type LocalBoatForm = {
   id: string | number;
@@ -60,20 +61,25 @@ const BoatDialog = ({
   initialBoatData,
   handleOpenNewBoat,
 }: BoatDialogProps) => {
+  const [activeTab, setActiveTab] = useState<"schedule" | "tickets">(
+    "schedule"
+  );
+
   const getNewScheduleTemplate = () => ({
-    id: Math.random().toString(36).substring(2, 11),
+    id: Math.random().toString(36).substr(2, 9),
     start_time: "",
     end_time: "",
   });
 
   const getNewTicketTemplate = () => ({
-    id: Date.now(),
+    id: Math.random().toString(36).substr(2, 9),
     name: "",
     short_description: "",
     options: [],
   });
 
   const getNewOptionTemplate = () => ({
+    id: Math.random().toString(36).substr(2, 9),
     option_name: "",
     market_price: 0,
     net_price: 0,
@@ -132,6 +138,7 @@ const BoatDialog = ({
   const handleLocalSubmit: SubmitHandler<LocalBoatForm> = (data) => {
     onSaveBoat(data);
     setDialogOpen(false);
+    setActiveTab("schedule");
   };
 
   return (
@@ -143,12 +150,16 @@ const BoatDialog = ({
           onClick={handleOpenNewBoat}
         />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-5xl">
+      <DialogContent className="sm:max-w-5xl max-h-[95vh] overflow-y-auto">
         <DialogTitle className="mb-5">
           {isEditing ? "Edit Boat" : "Add Boat"}
         </DialogTitle>
         <DialogDescription asChild>
-          <Tabs defaultValue="schedule">
+          <Tabs
+            defaultValue={activeTab}
+            value={activeTab}
+            onValueChange={setActiveTab}
+          >
             <TabsList>
               <TabsTrigger value="schedule">Schedule</TabsTrigger>
               <TabsTrigger value="tickets">Tickets</TabsTrigger>
@@ -242,13 +253,14 @@ const BoatDialog = ({
                   </tbody>
                 </table>
               </div>
-              <div className="flex justify-end items-center">
-                <FormButton
-                  onClick={handleSubmit(handleLocalSubmit)}
-                  disabled={isSubmitting}
+
+              <div className="flex justify-end">
+                <Button
+                  className="bg-white text-black border-[1.8px] border-dashed hover:bg-white cursor-pointer"
+                  onClick={() => setActiveTab("tickets")}
                 >
-                  {isEditing ? "Update" : "Save"}
-                </FormButton>
+                  Next
+                </Button>
               </div>
             </TabsContent>
 
@@ -278,9 +290,19 @@ const BoatDialog = ({
                     getNewOptionTemplate={getNewOptionTemplate}
                   />
                 ))}
-                
+
                 <div className="flex justify-between items-center">
-                  <FormButton type="submit" disabled={isSubmitting}>
+                  <Button
+                    className="bg-white text-black border-[1.8px] border-dashed hover:bg-white cursor-pointer"
+                    onClick={() => setActiveTab("schedule")}
+                  >
+                    Previous
+                  </Button>
+
+                  <FormButton
+                    onClick={handleSubmit(handleLocalSubmit)}
+                    disabled={isSubmitting}
+                  >
                     {isEditing ? "Update" : "Save"}
                   </FormButton>
                 </div>

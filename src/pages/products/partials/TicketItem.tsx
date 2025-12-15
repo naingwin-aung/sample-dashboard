@@ -30,6 +30,11 @@ const TicketItem = ({
     name: `tickets.${ticketIndex}.options` as const,
   });
 
+  const addTicketOption = () => {
+    if(optionFields.length >= 2) return;
+    appendOption(getNewOptionTemplate());
+  }
+
   return (
     <div className="border border-gray-200 rounded-md p-4 mb-5">
       <div className="flex justify-end">
@@ -72,7 +77,7 @@ const TicketItem = ({
                 <Plus
                   size={19}
                   className="ms-2.5 text-gray-600 cursor-pointer"
-                  onClick={() => appendOption(getNewOptionTemplate())}
+                  onClick={() => addTicketOption()}
                 />
               </th>
               <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
