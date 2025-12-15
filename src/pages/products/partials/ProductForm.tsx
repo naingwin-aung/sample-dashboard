@@ -16,37 +16,45 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from "@/components/ui/multi-select";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { allPiersQueryOption } from "@/api/piers";
 import FormTextArea from "@/components/global/FormTextArea";
 import { PenBox, Trash2 } from "lucide-react";
 import BoatDialog from "./BoatDialog";
 
-type FormFields = {
+type BoatOption = {
+  option_name: string;
+  market_price: number;
+  net_price: number;
+};
+
+type Ticket = {
+  id: string | number;
+  name: string;
+  short_description: string;
+  options: BoatOption[];
+};
+
+type ScheduleTime = {
+  start_time: string;
+  end_time: string;
+};
+
+type Boat = {
+  id: string | number;
+  boat_id: string | number;
+  start_date: string;
+  end_date: string;
+  schedule_times: ScheduleTime[]; // Updated to use the nested array
+  tickets: Ticket[];
+};
+
+export type FormFields = {
   name: string;
   piers: string[] | number[];
   description: string;
-  boats: Array<{
-    id: string | number;
-    boat_id: string | number;
-    start_date: string;
-    end_date: string;
-    schedule_times: Array<{
-      start_time: string;
-      end_time: string;
-    }>;
-    tickets: Array<{
-      id: string | number;
-      name: string;
-      short_description: string;
-      options: Array<{
-        option_name: string;
-        market_price: number;
-        net_price: number;
-      }>;
-    }>;
-  }>;
+  boats: Boat[];
 };
 
 const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
@@ -58,7 +66,12 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     formState: { errors, isSubmitting },
   } = useForm<FormFields>();
 
-  const { fields: boatFields } = useFieldArray({
+  const {
+    fields: boatFields,
+    append: appendBoat,
+    remove: removeBoat,
+    update: updateBoat,
+  } = useFieldArray({
     name: "boats",
     control,
   });
@@ -68,6 +81,23 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
   });
 
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
+  const handleSaveBoat = (newBoatData: any) => {
+    if (editingIndex !== null) {
+        updateBoat(editingIndex, {
+            ...newBoatData,
+            id: boatFields[editingIndex].id,
+        });
+    } else {
+        appendBoat({
+            ...newBoatData,
+            id: Math.random().toString(36).substr(2, 9),
+        });
+    }
+    setDialogOpen(false);
+    setEditingIndex(null);
+  };
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -107,9 +137,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
               name="piers"
               control={control}
               render={({ field }) => (
-                <MultiSelect
-                  onValuesChange={field.onChange}
-                >
+                <MultiSelect onValuesChange={field.onChange}>
                   <MultiSelectTrigger className="w-full">
                     <MultiSelectValue
                       overflowBehavior="wrap"
@@ -149,6 +177,13 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                   <BoatDialog
                     dialogOpen={dialogOpen}
                     setDialogOpen={setDialogOpen}
+                    onSaveBoat={handleSaveBoat}
+                    isEditing={editingIndex !== null}
+                    initialBoatData={
+                      editingIndex !== null
+                        ? boatFields[editingIndex]
+                        : undefined
+                    }
                   />
                 </td>
                 <td className="px-6 py-3 text-left text-sm tracking-wide text-gray-600">
@@ -170,13 +205,13 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 <tr key={boat.id}>
                   <td className="w-0.5"></td>
                   <td className="px-6 py-3 whitespace-nowrap text-sm">
-                    Sample Boat
+                    {boat.boat_id}
                   </td>
                   <td className="px-6 py-3 whitespace-nowrap text-sm">
-                    12-Dec-2025
+                    {boat.start_date}
                   </td>
                   <td className="px-6 py-3 whitespace-nowrap text-sm">
-                    15-Dec-2025
+                    {boat.end_date}
                   </td>
                   <td className="px-6 py-3 text-end">
                     <span>
