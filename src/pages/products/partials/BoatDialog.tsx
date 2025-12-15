@@ -40,6 +40,7 @@ interface BoatDialogProps {
   onSaveBoat: (newBoatData: LocalBoatForm) => void;
   isEditing: boolean;
   initialBoatData?: FieldArrayWithId<FormFields, "boats", "id">;
+  handleOpenNewBoat?: () => void;
 }
 
 const BoatDialog = ({
@@ -48,6 +49,7 @@ const BoatDialog = ({
   onSaveBoat,
   isEditing,
   initialBoatData,
+  handleOpenNewBoat,
 }: BoatDialogProps) => {
   const getNewScheduleTemplate = () => ({
     id: Math.random().toString(36).substr(2, 9),
@@ -74,17 +76,25 @@ const BoatDialog = ({
 
   useEffect(() => {
     if (dialogOpen) {
-      reset({
-        id: initialBoatData?.id || "",
-        boat_id: initialBoatData?.boat_id || "",
-        start_date: initialBoatData?.start_date || "",
-        end_date: initialBoatData?.end_date || "",
-        schedule_times: initialBoatData?.schedule_times || [
-          getNewScheduleTemplate(),
-        ],
-      });
+      if (isEditing && initialBoatData) {
+        reset({
+          id: initialBoatData.id,
+          boat_id: initialBoatData.boat_id,
+          start_date: initialBoatData.start_date,
+          end_date: initialBoatData.end_date,
+          schedule_times: initialBoatData.schedule_times,
+        });
+      } else {
+        reset({
+          id: Math.random().toString(36).substr(2, 9),
+          boat_id: "",
+          start_date: "",
+          end_date: "",
+          schedule_times: [getNewScheduleTemplate()],
+        });
+      }
     }
-  }, [dialogOpen, initialBoatData, reset]);
+  }, [dialogOpen, isEditing, initialBoatData, reset]);
 
   const {
     fields: scheduleFields,
@@ -106,6 +116,7 @@ const BoatDialog = ({
         <Plus
           size={19}
           className="cursor-pointer ms-3.5 text-gray-600 hover:text-gray-900"
+          onClick={handleOpenNewBoat}
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-5xl">

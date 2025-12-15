@@ -99,6 +99,11 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     setEditingIndex(null);
   };
 
+  const handleOpenNewBoat = () => {
+    setEditingIndex(null);
+    setDialogOpen(true);
+  }
+
   const handleOpenEditBoat = (index: number) => {
     setEditingIndex(index);
     setDialogOpen(true);
@@ -187,6 +192,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                         ? boatFields[editingIndex]
                         : undefined
                     }
+                    handleOpenNewBoat={handleOpenNewBoat}
                   />
                 </td>
                 <td className="px-6 py-3 text-left text-sm tracking-wide text-gray-600">
