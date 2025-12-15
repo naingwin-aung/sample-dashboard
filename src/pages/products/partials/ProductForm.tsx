@@ -35,8 +35,10 @@ type FormFields = {
     boat_id: string | number;
     start_date: string;
     end_date: string;
-    start_time: string;
-    end_time: string;
+    schedule_times: Array<{
+      start_time: string;
+      end_time: string;
+    }>;
     tickets: Array<{
       id: string | number;
       name: string;
@@ -147,7 +149,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
           <table className="min-w-full divide-y divide-gray-200 shadow-lg rounded-lg">
             <thead>
               <tr>
-                <th className="w-0.5">
+                <td className="w-0.5">
                   <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                     <DialogTrigger>
                       <Plus
@@ -191,6 +193,17 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                                 />
                               </div>
                             </div>
+
+                            <button className="mb-4 flex items-center text-gray-600 cursor-pointer border border-dashed border-green-400 rounded p-2 w-max">
+                              <Plus
+                                size={18}
+                                className="me-1.5 text-green-500 cursor-pointer"
+                              />
+                              <span className="text-sm text-green-500">
+                                Add schedule time
+                              </span>
+                            </button>
+
                             <div className="flex items-center gap-4 mt-2">
                               <div className="w-1/2">
                                 <FormLabel htmlFor="start_time">
@@ -219,7 +232,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                           </TabsContent>
                           <TabsContent value="tickets">
                             <div className="mt-3">
-                              <div className="mb-4 flex items-center text-gray-600 cursor-pointer border border-dashed border-green-400 rounded p-2 w-max">
+                              <button className="mb-4 flex items-center text-gray-600 cursor-pointer border border-dashed border-green-400 rounded p-2 w-max">
                                 <Plus
                                   size={18}
                                   className="me-1.5 text-green-500 cursor-pointer"
@@ -227,7 +240,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                                 <span className="text-sm text-green-500">
                                   Add Ticket
                                 </span>
-                              </div>
+                              </button>
                               <div className="border border-gray-200 rounded-md p-4 mb-5">
                                 <div className="flex justify-end">
                                   <div className="border border-red-600 rounded p-1 hover:border-red-700">
@@ -321,9 +334,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                                 <Button className="cursor-pointer">
                                   Previous
                                 </Button>
-                                <FormButton>
-                                  Save
-                                </FormButton>
+                                <FormButton>Save</FormButton>
                               </div>
                             </div>
                           </TabsContent>
@@ -331,13 +342,19 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                </td>
+                <td className="px-6 py-3 text-left text-sm tracking-wide text-gray-600">
                   Name
-                </th>
-                <th className="px-6 py-3 text-right text-sm font-medium tracking-wide text-gray-600">
+                </td>
+                 <td className="px-6 py-3 text-left text-sm tracking-wide text-gray-600">
+                  Available start date
+                </td>
+                 <td className="px-6 py-3 text-left text-sm tracking-wide text-gray-600">
+                  Available end date
+                </td>
+                <td className="px-6 py-3 text-right text-sm tracking-wide text-gray-600">
                   Action
-                </th>
+                </td>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -345,6 +362,12 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 <td className="w-0.5"></td>
                 <td className="px-6 py-3 whitespace-nowrap text-sm">
                   Sample Boat
+                </td>
+                <td className="px-6 py-3 whitespace-nowrap text-sm">
+                  12-Dec-2025
+                </td>
+                <td className="px-6 py-3 whitespace-nowrap text-sm">
+                  15-Dec-2025
                 </td>
                 <td className="px-6 py-3 text-end">
                   <span>
