@@ -129,9 +129,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
             <FormInput
               id="name"
               placeholder="Enter name"
-              {...register("name", {
-                required: "Name is required",
-              })}
+              {...register("name")}
             />
             {errors.name && <FormError message={errors.name.message} />}
           </div>

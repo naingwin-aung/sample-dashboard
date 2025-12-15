@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -108,10 +109,10 @@ const BoatDialog = ({
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-5xl">
-        <DialogHeader>
-          <DialogTitle className="mb-5">
-            {isEditing ? "Edit Boat" : "Add Boat"}
-          </DialogTitle>
+        <DialogTitle className="mb-5">
+          {isEditing ? "Edit Boat" : "Add Boat"}
+        </DialogTitle>
+        <DialogDescription asChild>
           <Tabs defaultValue="schedule">
             <TabsList>
               <TabsTrigger value="schedule">Schedule</TabsTrigger>
@@ -215,7 +216,7 @@ const BoatDialog = ({
               </div>
             </TabsContent>
           </Tabs>
-        </DialogHeader>
+        </DialogDescription>
       </DialogContent>
     </Dialog>
   );
