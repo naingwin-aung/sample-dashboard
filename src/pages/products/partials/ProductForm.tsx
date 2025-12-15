@@ -25,6 +25,7 @@ import BoatDialog from "./BoatDialog";
 import GalleryUpload from "@/components/file-upload/gallery-upload";
 
 type BoatOption = {
+  id: string | number;
   option_name: string;
   market_price: number;
   net_price: number;
@@ -38,6 +39,7 @@ type Ticket = {
 };
 
 type ScheduleTime = {
+  id: string | number;
   start_time: string;
   end_time: string;
 };
@@ -47,7 +49,6 @@ type Boat = {
   boat_id: string | number;
   start_date: string;
   end_date: string;
-  images: string[]; // Array of image URLs
   schedule_times: ScheduleTime[]; // Updated to use the nested array
   tickets: Ticket[];
 };
@@ -57,6 +58,7 @@ export type FormFields = {
   piers: string[] | number[];
   description: string;
   boats: Boat[];
+  images: File[];
 };
 
 const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
@@ -104,7 +106,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
   const handleOpenNewBoat = () => {
     setEditingIndex(null);
     setDialogOpen(true);
-  }
+  };
 
   const handleOpenEditBoat = (index: number) => {
     setEditingIndex(index);
@@ -131,7 +133,23 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-5">
-          <GalleryUpload />
+          {/* <GalleryUpload /> */}
+          <Controller
+            name="images"
+            control={control}
+            render={({ field: { onChange }, fieldState: { error } }) => (
+              <>
+                <GalleryUpload
+                  maxFiles={10}
+                  maxSize={2 * 1024 * 1024}
+                  onFilesChange={onChange}
+                />
+                {error && (
+                  <p className="text-red-500 text-sm">{error.message}</p>
+                )}
+              </>
+            )}
+          />
         </div>
         <div className="flex gap-4 mb-5">
           <div className="w-1/2 mb-6">
