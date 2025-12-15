@@ -22,6 +22,7 @@ import { allPiersQueryOption } from "@/api/piers";
 import FormTextArea from "@/components/global/FormTextArea";
 import { PenBox, Trash2 } from "lucide-react";
 import BoatDialog from "./BoatDialog";
+import GalleryUpload from "@/components/file-upload/gallery-upload";
 
 type BoatOption = {
   option_name: string;
@@ -46,6 +47,7 @@ type Boat = {
   boat_id: string | number;
   start_date: string;
   end_date: string;
+  images: string[]; // Array of image URLs
   schedule_times: ScheduleTime[]; // Updated to use the nested array
   tickets: Ticket[];
 };
@@ -128,6 +130,9 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
         <div className="text-red-500 text-sm mt-1.5">{errors.root.message}</div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-5">
+          <GalleryUpload />
+        </div>
         <div className="flex gap-4 mb-5">
           <div className="w-1/2 mb-6">
             <FormLabel htmlFor="name">Name</FormLabel>
