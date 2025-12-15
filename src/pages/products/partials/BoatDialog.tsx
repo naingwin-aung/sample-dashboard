@@ -13,7 +13,6 @@ import { Plus, Trash2 } from "lucide-react";
 import {
   useFieldArray,
   useForm,
-  type Control,
   type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
