@@ -53,25 +53,25 @@ const Boats = () => {
 
       {data && data.data.length > 0 && (
         <>
-          <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-xs">
-            <table className="min-w-full divide-y divide-gray-200 shadow-lg rounded-lg">
+          <div className="overflow-x-auto border border-gray-200 rounded-md shadow-xs">
+            <table className="min-w-full divide-y divide-gray-200 shadow-xs rounded-md">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                  <td className="px-6 py-2.5 text-left text-sm font-medium tracking-wide text-gray-500">
                     Name
-                  </th>
-                  <th className="px-6 py-3 text-right text-sm font-medium tracking-wide text-gray-600">
+                  </td>
+                  <td className="px-6 py-2.5 text-right text-sm font-medium tracking-wide text-gray-500">
                     Action
-                  </th>
+                  </td>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {data.data.map((boat: Boat) => (
-                  <tr key={boat.id}>
-                    <td className="px-6 py-3 whitespace-nowrap text-sm">
+                  <tr key={boat.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-2.5 whitespace-nowrap text-sm">
                       {boat.name}
                     </td>
-                    <td className="px-6 py-3 text-end">
+                    <td className="px-6 py-2.5 text-end">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="cursor-pointer">
