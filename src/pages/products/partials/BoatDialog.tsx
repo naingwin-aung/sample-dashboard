@@ -1,12 +1,10 @@
 import FormButton from "@/components/global/FormButton";
 import FormInput from "@/components/global/FormInput";
 import FormLabel from "@/components/global/FormLabel";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -21,8 +19,9 @@ import {
 } from "react-hook-form";
 import type { FormFields } from "./ProductForm";
 import { useEffect } from "react";
+import TicketItem from "./TicketItem";
 
-type LocalBoatForm = {
+export type LocalBoatForm = {
   id: string | number;
   boat_id: string | number;
   start_date: string;
@@ -31,6 +30,16 @@ type LocalBoatForm = {
     id: string | number;
     start_time: string;
     end_time: string;
+  }>;
+  tickets: Array<{
+    id: string | number;
+    name: string;
+    short_description: string;
+    options: Array<{
+      option_name: string;
+      market_price: number;
+      net_price: number;
+    }>;
   }>;
 };
 
@@ -52,9 +61,22 @@ const BoatDialog = ({
   handleOpenNewBoat,
 }: BoatDialogProps) => {
   const getNewScheduleTemplate = () => ({
-    id: Math.random().toString(36).substr(2, 9),
+    id: Math.random().toString(36).substring(2, 11),
     start_time: "",
     end_time: "",
+  });
+
+  const getNewTicketTemplate = () => ({
+    id: Date.now(),
+    name: "",
+    short_description: "",
+    options: [],
+  });
+
+  const getNewOptionTemplate = () => ({
+    option_name: "",
+    market_price: 0,
+    net_price: 0,
   });
 
   const {
@@ -63,16 +85,7 @@ const BoatDialog = ({
     handleSubmit,
     reset,
     formState: { isSubmitting },
-  } = useForm<LocalBoatForm>({
-    defaultValues: {
-      boat_id: initialBoatData?.boat_id || "",
-      start_date: initialBoatData?.start_date || "",
-      end_date: initialBoatData?.end_date || "",
-      schedule_times: initialBoatData?.schedule_times || [
-        getNewScheduleTemplate(),
-      ],
-    },
-  });
+  } = useForm<LocalBoatForm>();
 
   useEffect(() => {
     if (dialogOpen) {
@@ -83,14 +96,16 @@ const BoatDialog = ({
           start_date: initialBoatData.start_date,
           end_date: initialBoatData.end_date,
           schedule_times: initialBoatData.schedule_times,
+          tickets: initialBoatData.tickets,
         });
       } else {
         reset({
-          id: Math.random().toString(36).substr(2, 9),
+          id: Math.random().toString(36).substring(2, 9),
           boat_id: "",
           start_date: "",
           end_date: "",
           schedule_times: [getNewScheduleTemplate()],
+          tickets: [getNewTicketTemplate()],
         });
       }
     }
@@ -103,6 +118,15 @@ const BoatDialog = ({
   } = useFieldArray({
     control,
     name: "schedule_times",
+  });
+
+  const {
+    fields: ticketFields,
+    append: appendTicket,
+    remove: removeTicket,
+  } = useFieldArray({
+    control,
+    name: "tickets",
   });
 
   const handleLocalSubmit: SubmitHandler<LocalBoatForm> = (data) => {
@@ -127,6 +151,7 @@ const BoatDialog = ({
           <Tabs defaultValue="schedule">
             <TabsList>
               <TabsTrigger value="schedule">Schedule</TabsTrigger>
+              <TabsTrigger value="tickets">Tickets</TabsTrigger>
             </TabsList>
             <TabsContent value="schedule">
               <div className="flex items-center gap-4 mt-3 mb-7">
@@ -224,6 +249,41 @@ const BoatDialog = ({
                 >
                   {isEditing ? "Update" : "Save"}
                 </FormButton>
+              </div>
+            </TabsContent>
+
+            {/* --- Tickets Tab --- */}
+            <TabsContent value="tickets">
+              <div className="mt-3">
+                <button
+                  type="button"
+                  className="mb-4 flex items-center text-gray-600 cursor-pointer border border-dashed border-green-400 rounded p-2 w-max"
+                  onClick={() => appendTicket(getNewTicketTemplate())}
+                >
+                  <Plus
+                    size={18}
+                    className="me-1.5 text-green-500 cursor-pointer"
+                  />
+                  <span className="text-sm text-green-500">Add Ticket</span>
+                </button>
+
+                {/* Map over tickets */}
+                {ticketFields.map((ticket, ticketIndex) => (
+                  <TicketItem
+                    key={ticket.id}
+                    ticketIndex={ticketIndex}
+                    control={control}
+                    register={register}
+                    removeTicket={removeTicket}
+                    getNewOptionTemplate={getNewOptionTemplate}
+                  />
+                ))}
+                
+                <div className="flex justify-between items-center">
+                  <FormButton type="submit" disabled={isSubmitting}>
+                    {isEditing ? "Update" : "Save"}
+                  </FormButton>
+                </div>
               </div>
             </TabsContent>
           </Tabs>
