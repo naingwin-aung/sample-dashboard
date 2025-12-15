@@ -85,18 +85,23 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
 
   const handleSaveBoat = (newBoatData: any) => {
     if (editingIndex !== null) {
-        updateBoat(editingIndex, {
-            ...newBoatData,
-            id: boatFields[editingIndex].id,
-        });
+      updateBoat(editingIndex, {
+        ...newBoatData,
+        id: boatFields[editingIndex].id,
+      });
     } else {
-        appendBoat({
-            ...newBoatData,
-            id: Math.random().toString(36).substr(2, 9),
-        });
+      appendBoat({
+        ...newBoatData,
+        id: Math.random().toString(36).substr(2, 9),
+      });
     }
     setDialogOpen(false);
     setEditingIndex(null);
+  };
+
+  const handleOpenEditBoat = (index: number) => {
+    setEditingIndex(index);
+    setDialogOpen(true);
   };
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
@@ -201,7 +206,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {boatFields.map((boat) => (
+              {boatFields.map((boat, index) => (
                 <tr key={boat.id}>
                   <td className="w-0.5"></td>
                   <td className="px-6 py-3 whitespace-nowrap text-sm">
@@ -219,11 +224,13 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                         size={18}
                         strokeWidth={2.1}
                         className="inline me-4 text-gray-600 cursor-pointer"
+                        onClick={() => handleOpenEditBoat(index)}
                       />
                       <Trash2
                         size={18}
                         strokeWidth={2.1}
                         className="inline text-red-600 cursor-pointer"
+                        onClick={() => removeBoat(index)}
                       />
                     </span>
                   </td>

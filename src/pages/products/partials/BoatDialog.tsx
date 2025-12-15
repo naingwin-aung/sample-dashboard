@@ -15,6 +15,7 @@ import {
   useFieldArray,
   useForm,
   type Control,
+  type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
 import type { FormFields } from "./ProductForm";
@@ -37,7 +38,7 @@ interface BoatDialogProps {
   setDialogOpen: (open: boolean) => void;
   onSaveBoat: (newBoatData: LocalBoatForm) => void;
   isEditing: boolean;
-  initialBoatData?: LocalBoatForm;
+  initialBoatData?: FieldArrayWithId<FormFields, "boats", "id">;
 }
 
 const BoatDialog = ({
@@ -101,13 +102,7 @@ const BoatDialog = ({
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="ms-2.5 text-gray-600 cursor-pointer hover:bg-gray-100"
-        >
-          <Plus size={19} />
-        </Button>
+        <Plus size={19} className="cursor-pointer ms-3.5 text-gray-600 hover:text-gray-900" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-5xl">
         <DialogHeader>
@@ -210,8 +205,10 @@ const BoatDialog = ({
                     </tbody>
                   </table>
                 </div>
-                <div className="text-end">
-                  <Button className="mt-6 cursor-pointer">Next</Button>
+                <div className="flex justify-end items-center">
+                  <FormButton type="submit" disabled={isSubmitting}>
+                    {isEditing ? "Update" : "Save"}
+                  </FormButton>
                 </div>
               </TabsContent>
             </Tabs>
