@@ -87,3 +87,35 @@ export const show = async (productId: number): Promise<FormProduct> => {
   const response = await api.get(`/admin/products/${productId}`);
   return response.data.data.product;
 }
+
+export const update = async (productId: number, data: FormProduct) => {
+  const formData = new FormData();
+
+  formData.append("name", data.name || "");
+  formData.append("description", data.description || "");
+
+  if (data.piers?.length) {
+    data.piers.forEach((pier, index) => {
+      formData.append(`piers[${index}][id]`, String(pier));
+    });
+  }
+
+  if (data.images?.length) {
+    data.images.forEach((image) => {
+      if (image instanceof File) {
+        formData.append("images[]", image);
+      }
+    });
+  }
+
+  if (data.boats?.length) {
+    appendNestedFormData(formData, data.boats, "boats");
+  }
+
+  const response = await api.put(`/admin/products/${productId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};

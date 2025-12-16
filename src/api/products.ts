@@ -1,4 +1,4 @@
-import { create, fetchProducts, show } from './product.fetch';
+import { create, fetchProducts, show, update } from './product.fetch';
 import type { FormProduct } from '@/types/product';
 
 export interface Product {
@@ -27,6 +27,12 @@ export const ListProductQueryOption = (page: number, limit: number) => {
 export const createProductQueryOption = () => {
     return {
         mutationFn: (newProduct: FormProduct) => create(newProduct),
+    }
+}
+
+export const updateProductQueryOption = () => {
+    return {
+        mutationFn: ({ productId, data }: { productId: number; data: FormProduct }) => update(productId, data),
     }
 }
 

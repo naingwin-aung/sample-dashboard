@@ -23,10 +23,11 @@ import FormTextArea from "@/components/global/FormTextArea";
 import { PenBox, Trash2 } from "lucide-react";
 import BoatDialog from "./BoatDialog";
 import GalleryUpload from "@/components/file-upload/gallery-upload";
-import type { Boat, FormProduct } from "@/types/product";
+import type { FormProduct } from "@/types/product";
 import {
   createProductQueryOption,
   showProductQueryOption,
+  updateProductQueryOption,
 } from "@/api/products";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -36,7 +37,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
 
   const { data: product, isPending: isLoadingProduct } = useQuery({
     ...showProductQueryOption(productId),
-    enabled: !isCreate,
+    enabled: !isCreate && !!productId,
   });
 
   const {
@@ -151,10 +152,19 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     },
   });
 
+  const updateMutation = useMutation({
+    ...updateProductQueryOption(),
+    onSuccess: () => {
+      navigate("/products");
+    },
+  });
+
   const onSubmit: SubmitHandler<FormProduct> = async (data) => {
     try {
       if (isCreate) {
         createMutation.mutate(data);
+      } else {
+        updateMutation.mutate({ productId, data });
       }
     } catch (error) {
       setError("root", {
