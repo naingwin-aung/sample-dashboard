@@ -16,10 +16,10 @@ import {
   type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
-import type { FormFields } from "./ProductForm";
 import { useEffect, useState } from "react";
 import TicketItem from "./TicketItem";
 import { Button } from "@/components/ui/button";
+import type { FormProduct } from "@/types/product";
 
 export type LocalBoatForm = {
   id: string | number;
@@ -48,7 +48,7 @@ interface BoatDialogProps {
   setDialogOpen: (open: boolean) => void;
   onSaveBoat: (newBoatData: LocalBoatForm) => void;
   isEditing: boolean;
-  initialBoatData?: FieldArrayWithId<FormFields, "boats", "id">;
+  initialBoatData?: FieldArrayWithId<FormProduct, "boats", "id">;
   handleOpenNewBoat?: () => void;
 }
 

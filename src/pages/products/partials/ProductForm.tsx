@@ -17,49 +17,15 @@ import {
   MultiSelectValue,
 } from "@/components/ui/multi-select";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { allPiersQueryOption } from "@/api/piers";
 import FormTextArea from "@/components/global/FormTextArea";
 import { PenBox, Trash2 } from "lucide-react";
 import BoatDialog from "./BoatDialog";
 import GalleryUpload from "@/components/file-upload/gallery-upload";
-
-type BoatOption = {
-  id: string | number;
-  option_name: string;
-  market_price: number;
-  net_price: number;
-};
-
-type Ticket = {
-  id: string | number;
-  name: string;
-  short_description: string;
-  options: BoatOption[];
-};
-
-type ScheduleTime = {
-  id: string | number;
-  start_time: string;
-  end_time: string;
-};
-
-type Boat = {
-  id: string | number;
-  boat_id: string | number;
-  start_date: string;
-  end_date: string;
-  schedule_times: ScheduleTime[]; // Updated to use the nested array
-  tickets: Ticket[];
-};
-
-export type FormFields = {
-  name: string;
-  piers: string[] | number[];
-  description: string;
-  boats: Boat[];
-  images: File[];
-};
+import type { FormProduct } from "@/types/product";
+import { createProductQueryOption } from "@/api/products";
+import { useNavigate } from "react-router-dom";
 
 const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
   const {
@@ -68,7 +34,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     setError,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<FormFields>();
+  } = useForm<FormProduct>();
 
   const {
     fields: boatFields,
@@ -113,9 +79,20 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     setDialogOpen(true);
   };
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const navigate = useNavigate();
+
+  const createMutation = useMutation({
+    ...createProductQueryOption(),
+    onSuccess: () => {
+      navigate("/products");
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormProduct> = async (data) => {
     try {
-      console.log(data);
+      if (isCreate) {
+        createMutation.mutate(data);
+      }
     } catch (error) {
       setError("root", {
         type: "manual",
@@ -163,9 +140,9 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
           </div>
 
           <div className="w-1/2 mb-6">
-            <FormLabel htmlFor="piers">Piers</FormLabel>
+            <FormLabel htmlFor="on_board_piers">Piers</FormLabel>
             <Controller
-              name="piers"
+              name="on_board_piers"
               control={control}
               render={({ field }) => (
                 <MultiSelect onValuesChange={field.onChange}>
@@ -191,13 +168,21 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 </MultiSelect>
               )}
             />
-            {errors.piers && <FormError message={errors.piers.message} />}
+            {errors.on_board_piers && (
+              <FormError message={errors.on_board_piers.message} />
+            )}
           </div>
         </div>
 
         <div className="mb-5">
           <FormLabel htmlFor="description">Description</FormLabel>
-          <FormTextArea></FormTextArea>
+          <FormTextArea
+            id="description"
+            className="min-h-[120px]"
+            placeholder="Enter description"
+            {...register("description")}
+          />
+          {errors.description && <FormError message={errors.description.message} />}
         </div>
 
         <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-xs mb-5">

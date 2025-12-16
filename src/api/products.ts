@@ -1,4 +1,5 @@
-import api from '@/axios';
+import { create, fetchProducts } from './product.fetch';
+import type { FormProduct } from '@/types/product';
 
 export interface Product {
     id: number;
@@ -22,14 +23,9 @@ export const ListProductQueryOption = (page: number, limit: number) => {
     }
 }
 
-const fetchProducts = async (page: number, limit: number): Promise<ProductsResponse> => {
-    // await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-    const response = await api.get(`/admin/products`, {
-        params: {
-            page,
-            limit,
-        }
-    });
-
-    return response.data.data;
+// create
+export const createProductQueryOption = () => {
+    return {
+        mutationFn: (newProduct: FormProduct) => create(newProduct),
+    }
 }
