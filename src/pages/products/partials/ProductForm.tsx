@@ -121,7 +121,6 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
 
     if (editingIndex !== null) {
       const existingField = boatFields[editingIndex];
-      console.log("Existing Field:", existingField);
 
       updateBoat(editingIndex, newBoatData);
     } else {

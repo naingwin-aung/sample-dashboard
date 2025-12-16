@@ -101,7 +101,6 @@ const BoatDialog = ({
   useEffect(() => {
     if (dialogOpen) {
       if (isEditing && initialBoatData) {
-        console.log("Initial Boat Data:", initialBoatData);
         reset({
           id: initialBoatData.id,
           boat_id: initialBoatData.boat_id,
