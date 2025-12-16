@@ -191,6 +191,7 @@ const BoatDialog = ({
                     Available start date
                   </FormLabel>
                   <FormInput
+                    type="date"
                     id="start_date"
                     placeholder="Select start date"
                     {...register("start_date")}
@@ -198,7 +199,8 @@ const BoatDialog = ({
                 </div>
                 <div className="w-1/3">
                   <FormLabel htmlFor="end_date">Available end date</FormLabel>
-                  <FormInput
+                  <FormInput  
+                    type="date"
                     id="end_date"
                     placeholder="Select end date"
                     {...register("end_date")}
@@ -236,6 +238,7 @@ const BoatDialog = ({
                         <td className="w-0.5"></td>
                         <td className="px-6 py-3 whitespace-nowrap text-sm">
                           <FormInput
+                            type="time"
                             id="start_time"
                             placeholder="Enter start time"
                             {...register(`schedule_times.${index}.start_time`)}
@@ -243,6 +246,7 @@ const BoatDialog = ({
                         </td>
                         <td className="px-6 py-3 whitespace-nowrap text-sm">
                           <FormInput
+                            type="time"
                             id="end_time"
                             placeholder="Enter end time"
                             {...register(`schedule_times.${index}.end_time`)}
