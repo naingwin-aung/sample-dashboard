@@ -47,7 +47,7 @@ const Products = () => {
       {error && <TableError />}
 
       {data?.data.length === 0 && (
-        <TableNotFound>No Piers found.</TableNotFound>
+        <TableNotFound>No products found.</TableNotFound>
       )}
 
       {data && data.data.length > 0 && (
