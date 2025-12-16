@@ -181,33 +181,35 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
         <div className="text-red-500 text-sm mt-1.5">{errors.root.message}</div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-8 p-6 border rounded-xl bg-white shadow-xs">
-          {/* Existing Images Section */}
-          <FormLabel className="text-sm font-semibold text-gray-700">
-            Existing Gallery
-          </FormLabel>
-          <div className="flex flex-wrap gap-4 mt-3">
-            {product?.images.map((img: any, index: number) => (
-              <div key={img.id || index} className="relative w-24 h-24 group">
-                <img
-                  src={img.url || img}
-                  className="w-full h-full object-cover rounded-lg border shadow-sm"
-                  alt="Product Thumbnail"
-                />
-                <button
-                  type="button"
-                  // onClick={() => {
-                  //   const updated = product?.images.filter((_, i) => i !== index);
-                  //   setValue("old_images", updated);
-                  // }}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <X size={12} />
-                </button>
-              </div>
-            ))}
+        {!isCreate && (
+          <div className="mb-8 p-6 border rounded-xl bg-white shadow-xs">
+            {/* Existing Images Section */}
+            <FormLabel className="text-sm font-semibold text-gray-700">
+              Existing Gallery
+            </FormLabel>
+            <div className="flex flex-wrap gap-4 mt-3">
+              {product?.images.map((img: any, index: number) => (
+                <div key={img.id || index} className="relative w-24 h-24 group">
+                  <img
+                    src={img.url || img}
+                    className="w-full h-full object-cover rounded-lg border shadow-sm"
+                    alt="Product Thumbnail"
+                  />
+                  <button
+                    type="button"
+                    // onClick={() => {
+                    //   const updated = product?.images.filter((_, i) => i !== index);
+                    //   setValue("old_images", updated);
+                    // }}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="mb-5">
           {/* <GalleryUpload /> */}
