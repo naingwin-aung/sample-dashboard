@@ -101,17 +101,18 @@ const BoatDialog = ({
   useEffect(() => {
     if (dialogOpen) {
       if (isEditing && initialBoatData) {
+        console.log("Initial Boat Data:", initialBoatData);
         reset({
           id: initialBoatData.id,
           boat_id: initialBoatData.boat_id,
           start_date: initialBoatData.start_date,
           end_date: initialBoatData.end_date,
-          schedule_times: initialBoatData.schedule_times,
-          tickets: initialBoatData.tickets,
+          schedule_times: [...initialBoatData.schedule_times],
+          tickets: [...initialBoatData.tickets],
         });
       } else {
         reset({
-          id: Math.random().toString(36).substring(2, 9),
+          id: Math.random().toString(36).substr(2, 9),
           boat_id: "",
           start_date: "",
           end_date: "",
@@ -141,9 +142,7 @@ const BoatDialog = ({
   });
 
   const handleLocalSubmit: SubmitHandler<LocalBoatForm> = (data) => {
-    const selectedBoat = all_boats?.find(
-      (b) => b.id == data.boat_id
-    );
+    const selectedBoat = all_boats?.find((b) => b.id == data.boat_id);
     onSaveBoat(data, selectedBoat?.name);
     setDialogOpen(false);
     setActiveTab("schedule");
@@ -202,7 +201,7 @@ const BoatDialog = ({
                 </div>
                 <div className="w-1/3">
                   <FormLabel htmlFor="end_date">Available end date</FormLabel>
-                  <FormInput  
+                  <FormInput
                     type="date"
                     id="end_date"
                     placeholder="Select end date"

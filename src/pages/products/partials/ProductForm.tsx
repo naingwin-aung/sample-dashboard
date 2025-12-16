@@ -98,6 +98,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
   } = useFieldArray({
     name: "boats",
     control,
+    keyName: "rhf_id",
   });
 
   const { data: all_piers } = useQuery({
@@ -119,15 +120,12 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     }
 
     if (editingIndex !== null) {
-      updateBoat(editingIndex, {
-        ...newBoatData,
-        id: boatFields[editingIndex].id,
-      });
+      const existingField = boatFields[editingIndex];
+      console.log("Existing Field:", existingField);
+
+      updateBoat(editingIndex, newBoatData);
     } else {
-      appendBoat({
-        ...newBoatData,
-        id: Math.random().toString(36).substr(2, 9),
-      });
+      appendBoat(newBoatData);
     }
     setDialogOpen(false);
     setEditingIndex(null);
