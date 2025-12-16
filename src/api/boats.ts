@@ -32,3 +32,17 @@ const fetchBoats = async (page: number, limit: number): Promise<BoatsResponse> =
 
     return response.data.data;
 }
+
+// all boats
+export const allBoatQueryOption = () => {
+    return {
+        queryKey: ['all_boats'],
+        queryFn: () => fetchAllBoats(),
+    }
+}
+
+const fetchAllBoats = async (): Promise<Boat[]> => {
+    const response = await api.get(`/admin/all/boats`);
+
+    return response.data.data.data;
+}

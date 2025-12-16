@@ -20,6 +20,8 @@ import { useEffect, useState } from "react";
 import TicketItem from "./TicketItem";
 import { Button } from "@/components/ui/button";
 import type { FormProduct } from "@/types/product";
+import { allBoatQueryOption } from "@/api/boats";
+import { useQuery } from "@tanstack/react-query";
 
 export type LocalBoatForm = {
   id: string | number;
@@ -60,6 +62,10 @@ const BoatDialog = ({
   initialBoatData,
   handleOpenNewBoat,
 }: BoatDialogProps) => {
+  const { data: all_boats } = useQuery({
+    ...allBoatQueryOption(),
+  });
+
   const [activeTab, setActiveTab] = useState<"schedule" | "tickets">(
     "schedule"
   );
@@ -74,7 +80,7 @@ const BoatDialog = ({
     id: Math.random().toString(36).substr(2, 9),
     name: "",
     short_description: "",
-    options: [],
+    prices: [],
   });
 
   const getNewPriceTemplate = () => ({
@@ -167,11 +173,18 @@ const BoatDialog = ({
               <div className="flex items-center gap-4 mt-3 mb-7">
                 <div className="w-1/3">
                   <FormLabel htmlFor="boat">Boat</FormLabel>
-                  <FormInput
+                  <select
                     id="boat"
-                    placeholder="Select boat"
+                    className="w-full px-2 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-0"
                     {...register("boat_id")}
-                  />
+                  >
+                    <option value="">Select a boat</option>
+                    {all_boats?.map((boat) => (
+                      <option key={boat.id} value={boat.id}>
+                        {boat.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="w-1/3">
                   <FormLabel htmlFor="start_date">
