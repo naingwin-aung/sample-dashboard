@@ -22,9 +22,9 @@ export const create = async (newProduct: FormProduct) => {
   formData.append("name", newProduct.name || "");
   formData.append("description", newProduct.description || "");
 
-  if (newProduct.on_board_piers?.length) {
-    newProduct.on_board_piers.forEach((pier, index) => {
-      formData.append(`on_board_piers[${index}][id]`, String(pier));
+  if (newProduct.piers?.length) {
+    newProduct.piers.forEach((pier, index) => {
+      formData.append(`piers[${index}][id]`, String(pier));
     });
   }
 

@@ -16,7 +16,7 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from "@/components/ui/multi-select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { allPiersQueryOption } from "@/api/piers";
 import FormTextArea from "@/components/global/FormTextArea";
@@ -44,8 +44,21 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     handleSubmit,
     setError,
     control,
+    // reset,
     formState: { errors, isSubmitting },
   } = useForm<FormProduct>();
+
+  // useEffect(() => {
+  //   if (product) {
+  //     reset({
+  //       name: product.name,
+  //       description: product.description,
+  //       piers: product.piers?.map((pier) => pier.id.toString()) || [],
+  //       images: [],
+  //       boats: product.boats || [],
+  //     });
+  //   }
+  // }, [product, reset]);
 
   const {
     fields: boatFields,
@@ -160,9 +173,9 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
           </div>
 
           <div className="w-1/2 mb-6">
-            <FormLabel htmlFor="on_board_piers">Piers</FormLabel>
+            <FormLabel htmlFor="piers">Piers</FormLabel>
             <Controller
-              name="on_board_piers"
+              name="piers"
               control={control}
               render={({ field }) => (
                 <MultiSelect onValuesChange={field.onChange}>
@@ -188,8 +201,8 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 </MultiSelect>
               )}
             />
-            {errors.on_board_piers && (
-              <FormError message={errors.on_board_piers.message} />
+            {errors.piers && (
+              <FormError message={errors.piers.message} />
             )}
           </div>
         </div>

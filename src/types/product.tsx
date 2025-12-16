@@ -29,7 +29,7 @@ export type Boat = {
 
 export type FormProduct = {
   name: string;
-  on_board_piers: string[] | number[];
+  piers: string[] | number[];
   description: string;
   boats: Boat[];
   images: File[];
