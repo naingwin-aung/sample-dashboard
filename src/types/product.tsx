@@ -1,7 +1,7 @@
 export type BoatOption = {
   id: string | number;
-  option_name: string;
-  market_price: number;
+  name: string;
+  selling_price: number;
   net_price: number;
 };
 
@@ -9,7 +9,7 @@ export type Ticket = {
   id: string | number;
   name: string;
   short_description: string;
-  options: BoatOption[];
+  prices: BoatOption[];
 };
 
 export type ScheduleTime = {

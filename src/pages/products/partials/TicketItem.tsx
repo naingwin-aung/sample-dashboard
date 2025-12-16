@@ -9,7 +9,12 @@ interface TicketItemProps {
   control: Control<LocalBoatForm>;
   register: ReturnType<typeof useForm<LocalBoatForm>>["register"];
   removeTicket: (index: number) => void;
-  getNewOptionTemplate: () => { option_name: string; market_price: number; net_price: number };
+  getNewPriceTemplate: () => {
+    id: number | string;
+    name: string;
+    selling_price: number;
+    net_price: number;
+  };
 }
 
 const TicketItem = ({
@@ -17,7 +22,7 @@ const TicketItem = ({
   control,
   register,
   removeTicket,
-  getNewOptionTemplate,
+  getNewPriceTemplate,
 }: TicketItemProps) => {
   const ticketPath = `tickets.${ticketIndex}`;
 
@@ -27,13 +32,13 @@ const TicketItem = ({
     remove: removeOption,
   } = useFieldArray({
     control,
-    name: `tickets.${ticketIndex}.options` as const,
+    name: `tickets.${ticketIndex}.prices` as const,
   });
 
   const addTicketOption = () => {
-    if(optionFields.length >= 2) return;
-    appendOption(getNewOptionTemplate());
-  }
+    if (optionFields.length >= 2) return;
+    appendOption(getNewPriceTemplate());
+  };
 
   return (
     <div className="border border-gray-200 rounded-md p-4 mb-5">
@@ -103,17 +108,17 @@ const TicketItem = ({
                     id={`option_name_${ticketIndex}_${optionIndex}`}
                     placeholder="Enter option name"
                     {...register(
-                      `tickets.${ticketIndex}.options.${optionIndex}.option_name` as const
+                      `tickets.${ticketIndex}.prices.${optionIndex}.name` as const
                     )}
                   />
                 </td>
                 <td className="px-6 py-3 whitespace-nowrap text-sm">
                   <FormInput
-                    id={`market_price_${ticketIndex}_${optionIndex}`}
+                    id={`selling_price_${ticketIndex}_${optionIndex}`}
                     type="number"
                     placeholder="Enter market selling price"
                     {...register(
-                      `tickets.${ticketIndex}.options.${optionIndex}.market_price` as const,
+                      `tickets.${ticketIndex}.prices.${optionIndex}.selling_price` as const,
                       {
                         valueAsNumber: true,
                         required: "Price is required",
@@ -127,7 +132,7 @@ const TicketItem = ({
                     type="number"
                     placeholder="Enter net price"
                     {...register(
-                      `tickets.${ticketIndex}.options.${optionIndex}.net_price` as const,
+                      `tickets.${ticketIndex}.prices.${optionIndex}.net_price` as const,
                       {
                         valueAsNumber: true,
                         required: "Price is required",

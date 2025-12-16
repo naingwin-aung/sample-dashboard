@@ -35,9 +35,9 @@ export type LocalBoatForm = {
     id: string | number;
     name: string;
     short_description: string;
-    options: Array<{
-      option_name: string;
-      market_price: number;
+    prices: Array<{
+      name: string;
+      selling_price: number;
       net_price: number;
     }>;
   }>;
@@ -77,10 +77,10 @@ const BoatDialog = ({
     options: [],
   });
 
-  const getNewOptionTemplate = () => ({
+  const getNewPriceTemplate = () => ({
     id: Math.random().toString(36).substr(2, 9),
-    option_name: "",
-    market_price: 0,
+    name: "",
+    selling_price: 0,
     net_price: 0,
   });
 
@@ -286,7 +286,7 @@ const BoatDialog = ({
                     control={control}
                     register={register}
                     removeTicket={removeTicket}
-                    getNewOptionTemplate={getNewOptionTemplate}
+                    getNewPriceTemplate={getNewPriceTemplate}
                   />
                 ))}
 
