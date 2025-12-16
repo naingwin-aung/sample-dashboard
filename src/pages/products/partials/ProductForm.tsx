@@ -217,7 +217,10 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
               name="piers"
               control={control}
               render={({ field }) => (
-                <MultiSelect onValuesChange={field.onChange}>
+                <MultiSelect
+                  values={field.value?.map(String)}
+                  onValuesChange={field.onChange}
+                >
                   <MultiSelectTrigger className="w-full">
                     <MultiSelectValue
                       overflowBehavior="wrap"
