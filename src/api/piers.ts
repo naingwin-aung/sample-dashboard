@@ -38,7 +38,6 @@ export const showPierQueryOption = (pierId: number) => {
     return {
         queryKey: ['piers', pierId],
         queryFn: () => show(pierId),
-        enabled: !!pierId,
     }
 }
 

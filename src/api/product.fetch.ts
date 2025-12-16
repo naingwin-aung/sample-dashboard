@@ -81,3 +81,9 @@ const appendNestedFormData = (
 
   formData.append(keyPrefix, String(data));
 };
+
+
+export const show = async (productId: number): Promise<FormProduct> => {
+  const response = await api.get(`/admin/products/${productId}`);
+  return response.data.data.product;
+}

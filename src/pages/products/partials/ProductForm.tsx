@@ -24,10 +24,21 @@ import { PenBox, Trash2 } from "lucide-react";
 import BoatDialog from "./BoatDialog";
 import GalleryUpload from "@/components/file-upload/gallery-upload";
 import type { FormProduct } from "@/types/product";
-import { createProductQueryOption } from "@/api/products";
-import { useNavigate } from "react-router-dom";
+import {
+  createProductQueryOption,
+  showProductQueryOption,
+} from "@/api/products";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
+  const { id } = useParams();
+  const productId = id ? Number(id) : 0;
+
+  const { data: product, isPending: isLoadingProduct } = useQuery({
+    ...showProductQueryOption(productId),
+    enabled: !isCreate,
+  });
+
   const {
     register,
     handleSubmit,
@@ -102,6 +113,10 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
       });
     }
   };
+
+  if (!isCreate && isLoadingProduct) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -187,7 +202,9 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
             placeholder="Enter description"
             {...register("description")}
           />
-          {errors.description && <FormError message={errors.description.message} />}
+          {errors.description && (
+            <FormError message={errors.description.message} />
+          )}
         </div>
 
         <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-xs mb-5">

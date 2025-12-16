@@ -11,6 +11,7 @@ import EditPier from "./pages/piers/EditPier";
 import CreateBoatType from "./pages/boat-types/CreateBoatType";
 import EditBoatType from "./pages/boat-types/EditBoatType";
 import CreateProduct from "./pages/products/CreateProduct";
+import EditProduct from "./pages/products/EditProduct";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
           {
             path: "create",
             Component: CreateProduct,
+          },
+          {
+            path: "edit/:id",
+            Component: EditProduct,
           },
         ]
       }
