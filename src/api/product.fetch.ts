@@ -21,7 +21,7 @@ export const create = async (newProduct: FormProduct) => {
 
     if (newProduct.on_board_piers?.length) {
         newProduct.on_board_piers.forEach((pier, index) => {
-            formData.append(`on_board_piers[${index}]`, String(pier));
+            formData.append(`on_board_piers[${index}][id]`, String(pier));
         });
     }
 
@@ -33,7 +33,11 @@ export const create = async (newProduct: FormProduct) => {
         });
     }
 
-    formData.append('boats', JSON.stringify(newProduct.boats || []));
+    if (newProduct.boats?.length) {
+        newProduct.boats.forEach((boat, index) => {
+            formData.append(`boats[${index}]`, String(boat));
+        });
+    }
 
     const response = await api.post(`/admin/products`, formData, {
         headers: {
