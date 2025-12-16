@@ -91,6 +91,7 @@ export const show = async (productId: number): Promise<FormProduct> => {
 export const update = async (productId: number, data: FormProduct) => {
   const formData = new FormData();
 
+  formData.append("_method", "PUT");
   formData.append("name", data.name || "");
   formData.append("description", data.description || "");
 
@@ -112,7 +113,7 @@ export const update = async (productId: number, data: FormProduct) => {
     appendNestedFormData(formData, data.boats, "boats");
   }
 
-  const response = await api.put(`/admin/products/${productId}`, formData, {
+  const response = await api.post(`/admin/products/${productId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
