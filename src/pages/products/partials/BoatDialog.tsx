@@ -48,7 +48,7 @@ export type LocalBoatForm = {
 interface BoatDialogProps {
   dialogOpen: boolean;
   setDialogOpen: (open: boolean) => void;
-  onSaveBoat: (newBoatData: LocalBoatForm) => void;
+  onSaveBoat: (newBoatData: LocalBoatForm, boatName?: string) => void;
   isEditing: boolean;
   initialBoatData?: FieldArrayWithId<FormProduct, "boats", "id">;
   handleOpenNewBoat?: () => void;
@@ -141,7 +141,10 @@ const BoatDialog = ({
   });
 
   const handleLocalSubmit: SubmitHandler<LocalBoatForm> = (data) => {
-    onSaveBoat(data);
+    const selectedBoat = all_boats?.find(
+      (b) => b.id == data.boat_id
+    );
+    onSaveBoat(data, selectedBoat?.name);
     setDialogOpen(false);
     setActiveTab("schedule");
   };

@@ -74,10 +74,20 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     ...allPiersQueryOption(),
   });
 
+  const [boatNames, setBoatNames] = useState<Record<string, string>>({});
+
+  const getBoatName = (boatId: string | number) => {
+    return boatNames[boatId] || boatId;
+  };
+
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
-  const handleSaveBoat = (newBoatData: any) => {
+  const handleSaveBoat = (newBoatData: any, boatName?: string) => {
+    if (boatName && newBoatData.boat_id) {
+      setBoatNames((prev) => ({ ...prev, [newBoatData.boat_id]: boatName }));
+    }
+
     if (editingIndex !== null) {
       updateBoat(editingIndex, {
         ...newBoatData,
@@ -201,9 +211,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 </MultiSelect>
               )}
             />
-            {errors.piers && (
-              <FormError message={errors.piers.message} />
-            )}
+            {errors.piers && <FormError message={errors.piers.message} />}
           </div>
         </div>
 
@@ -257,7 +265,7 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 <tr key={boat.id}>
                   <td className="w-0.5"></td>
                   <td className="px-6 py-3 whitespace-nowrap text-sm">
-                    {boat.boat_id}
+                    {getBoatName(boat.boat_id)}
                   </td>
                   <td className="px-6 py-3 whitespace-nowrap text-sm">
                     {boat.start_date}
