@@ -23,7 +23,7 @@ import FormTextArea from "@/components/global/FormTextArea";
 import { PenBox, Trash2 } from "lucide-react";
 import BoatDialog from "./BoatDialog";
 import GalleryUpload from "@/components/file-upload/gallery-upload";
-import type { FormProduct } from "@/types/product";
+import type { Boat, FormProduct } from "@/types/product";
 import {
   createProductQueryOption,
   showProductQueryOption,
@@ -44,21 +44,50 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
     handleSubmit,
     setError,
     control,
-    // reset,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormProduct>();
 
-  // useEffect(() => {
-  //   if (product) {
-  //     reset({
-  //       name: product.name,
-  //       description: product.description,
-  //       piers: product.piers?.map((pier) => pier.id.toString()) || [],
-  //       images: [],
-  //       boats: product.boats || [],
-  //     });
-  //   }
-  // }, [product, reset]);
+  useEffect(() => {
+    if (product && !isCreate) {
+      const mappedBoats = product?.boats.map((boat: any) => ({
+        id: boat.id,
+        boat_id: boat.boat_id,
+        start_date: boat.start_date,
+        end_date: boat.end_date,
+        schedule_times: boat.schedule_times.map((st: any) => ({
+          id: st.id,
+          start_time: st.start_time,
+          end_time: st.end_time,
+        })),
+        tickets: boat.tickets.map((t: any) => ({
+          id: t.id,
+          name: t.name,
+          short_description: t.short_description,
+          prices: t.prices.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            selling_price: p.selling_price,
+            net_price: p.net_price,
+          })),
+        })),
+      }));
+
+      const names: Record<string, string> = {};
+      product.boats.forEach((boat: any) => {
+        if (boat.boat) names[boat.boat_id] = boat.boat.name;
+      });
+      setBoatNames(names);
+
+      reset({
+        name: product.name,
+        description: product.description,
+        piers: product.piers?.map((p: any) => p.id.toString()) || [],
+        images: product.images || [],
+        boats: mappedBoats,
+      });
+    }
+  }, [product, reset, isCreate]);
 
   const {
     fields: boatFields,

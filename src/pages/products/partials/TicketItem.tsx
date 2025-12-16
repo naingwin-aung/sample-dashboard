@@ -89,7 +89,7 @@ const TicketItem = ({
                 Options
               </th>
               <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
-                Market selling price
+                Selling price
               </th>
               <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
                 Net price
@@ -116,7 +116,7 @@ const TicketItem = ({
                   <FormInput
                     id={`selling_price_${ticketIndex}_${optionIndex}`}
                     type="number"
-                    placeholder="Enter market selling price"
+                    placeholder="Enter selling price"
                     {...register(
                       `tickets.${ticketIndex}.prices.${optionIndex}.selling_price` as const,
                       {
