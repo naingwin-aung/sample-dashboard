@@ -14,6 +14,31 @@ export const fetchProducts = async (page: number, limit: number): Promise<Produc
 }
 
 export const create = async (newProduct: FormProduct) => {
-    const response = await api.post(`/admin/products`, newProduct);
+    const formData = new FormData();
+
+    formData.append('name', newProduct.name || '');
+    formData.append('description', newProduct.description || '');
+
+    if (newProduct.on_board_piers?.length) {
+        newProduct.on_board_piers.forEach((pier, index) => {
+            formData.append(`on_board_piers[${index}]`, String(pier));
+        });
+    }
+
+    if (newProduct.images?.length) {
+        newProduct.images.forEach((image) => {
+            if (image instanceof File) {
+                formData.append('images[]', image);
+            }
+        });
+    }
+
+    formData.append('boats', JSON.stringify(newProduct.boats || []));
+
+    const response = await api.post(`/admin/products`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
     return response.data;
 };

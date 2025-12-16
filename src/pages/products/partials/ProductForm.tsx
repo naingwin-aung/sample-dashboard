@@ -119,7 +119,12 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
                 <GalleryUpload
                   maxFiles={10}
                   maxSize={2 * 1024 * 1024}
-                  onFilesChange={onChange}
+                  onFilesChange={(files) => {
+                    const fileObjects = files
+                      .map((f) => f.file)
+                      .filter((file): file is File => file instanceof File);
+                    onChange(fileObjects);
+                  }}
                 />
                 {error && (
                   <p className="text-red-500 text-sm">{error.message}</p>
