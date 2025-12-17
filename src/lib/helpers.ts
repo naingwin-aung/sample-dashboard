@@ -195,3 +195,37 @@ export function getSlug(title: string): string {
     .replace(/-+/g, '-') // Collapse multiple hyphens
     .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
 }
+
+export const appendNestedFormData = (
+  formData: FormData,
+  data: any,
+  keyPrefix: string = ''
+) => {
+  if (data === null || data === undefined) {
+    return;
+  }
+
+  if (data instanceof File) {
+    formData.append(keyPrefix, data);
+    return;
+  }
+
+  if (Array.isArray(data)) {
+    data.forEach((item, index) => {
+      const newPrefix = `${keyPrefix}[${index}]`;
+      appendNestedFormData(formData, item, newPrefix);
+    });
+    return;
+  }
+
+  if (typeof data === "object") {
+    Object.keys(data).forEach((key) => {
+      const value = data[key];
+      const newPrefix = keyPrefix ? `${keyPrefix}[${key}]` : key;
+      appendNestedFormData(formData, value, newPrefix);
+    });
+    return;
+  }
+
+  formData.append(keyPrefix, String(data));
+};

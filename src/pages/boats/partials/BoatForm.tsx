@@ -72,8 +72,19 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
   } = useForm<FormFields>();
 
   useEffect(() => {
-    if (boat) {
-      reset({ name: boat.name });
+    if (boat && !isCreate) {
+      reset({
+        name: boat.name,
+        boat_type_id: boat.boat_type_id,
+        capacity: boat.capacity,
+        images: [],
+        zones: boat.zones.map((zone: any) => ({
+          id: zone.id,
+          name: zone.name,
+          capacity: zone.capacity,
+          images: [],
+        })),
+      });
     }
   }, [boat, reset]);
 
@@ -114,9 +125,9 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       if (isCreate) {
-        createMutation.mutate({ name: data.name });
+        createMutation.mutate(data);
       } else {
-        updateMutation.mutate({ boatId, data: { name: data.name } });
+        updateMutation.mutate({ boatId, data });
       }
 
       toast.success(`Boat ${isCreate ? "created" : "updated"} successfully.`);
@@ -140,7 +151,7 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
         <div className="text-red-500 text-sm mt-1.5">{errors.root.message}</div>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        {!isCreate && (
+        {!isCreate && boat?.images.length > 0 && (
           <div className="mb-8 p-6 border rounded-xl bg-white shadow-xs">
             <FormLabel className="text-sm font-semibold text-gray-700">
               Existing Gallery

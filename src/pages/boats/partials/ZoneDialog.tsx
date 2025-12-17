@@ -1,3 +1,4 @@
+import GalleryUpload from "@/components/file-upload/gallery-upload";
 import FormButton from "@/components/global/FormButton";
 import FormInput from "@/components/global/FormInput";
 import FormLabel from "@/components/global/FormLabel";
@@ -10,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 interface ZoneDialogProps {
   dialogOpen: boolean;
@@ -32,6 +33,7 @@ const ZoneDialog = ({
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { isSubmitting },
   } = useForm();
@@ -42,12 +44,14 @@ const ZoneDialog = ({
         id: initialZoneData.id,
         name: initialZoneData.name,
         capacity: initialZoneData.capacity,
+        images: initialZoneData.images,
       });
     } else {
       reset({
         id: Math.random().toString(36).substr(2, 9),
         name: "",
         capacity: "",
+        images: [],
       });
     }
   }, [initialZoneData, isEditing, reset]);
@@ -72,6 +76,29 @@ const ZoneDialog = ({
         </DialogTitle>
         <DialogDescription asChild>
           <div>
+            <div className="mb-5">
+              <Controller
+                name="images"
+                control={control}
+                render={({ field: { onChange }, fieldState: { error } }) => (
+                  <>
+                    <GalleryUpload
+                      maxFiles={10}
+                      maxSize={2 * 1024 * 1024}
+                      onFilesChange={(files) => {
+                        const fileObjects = files
+                          .map((f) => f.file)
+                          .filter((file): file is File => file instanceof File);
+                        onChange(fileObjects);
+                      }}
+                    />
+                    {error && (
+                      <p className="text-red-500 text-sm">{error.message}</p>
+                    )}
+                  </>
+                )}
+              />
+            </div>
             <div className="flex items-center gap-4">
               <div className="w-1/2">
                 <FormLabel htmlFor="zone-name">Name</FormLabel>

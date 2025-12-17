@@ -33,7 +33,7 @@ export const createBoatQueryOption = () => {
 // update
 export const updateBoatQueryOption = () => {
     return {
-    mutationFn: ({ boatId, data }: { boatId: number; data: { name: string } }) => update(boatId, data),
+    mutationFn: ({ boatId, data }: { boatId: number; data: any }) => update(boatId, data),
   };
 }
 
