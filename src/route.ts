@@ -12,6 +12,8 @@ import CreateBoatType from "./pages/boat-types/CreateBoatType";
 import EditBoatType from "./pages/boat-types/EditBoatType";
 import CreateProduct from "./pages/products/CreateProduct";
 import EditProduct from "./pages/products/EditProduct";
+import CreateBoat from "./pages/boats/CreateBoat";
+import EditBoat from "./pages/boats/EditBoat";
 
 export const router = createBrowserRouter([
   {
@@ -54,11 +56,24 @@ export const router = createBrowserRouter([
             path: "edit/:id",
             Component: EditBoatType,
           },
-        ]
+        ],
       },
       {
         path: "/boats",
-        Component: Boats
+        children: [
+          {
+            index: true,
+            Component: Boats,
+          },
+          {
+            path: "create",
+            Component: CreateBoat,
+          },
+          {
+            path: "edit/:id",
+            Component: EditBoat,
+          },
+        ],
       },
       {
         path: "/products",
@@ -75,12 +90,12 @@ export const router = createBrowserRouter([
             path: "edit/:id",
             Component: EditProduct,
           },
-        ]
-      }
+        ],
+      },
     ],
   },
   {
     path: "*",
     Component: NotFound,
-  }
+  },
 ]);
