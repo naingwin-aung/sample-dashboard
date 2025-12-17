@@ -13,13 +13,11 @@ import { Plus, Trash2 } from "lucide-react";
 import {
   useFieldArray,
   useForm,
-  type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
 import { useEffect, useState } from "react";
 import TicketItem from "./TicketItem";
 import { Button } from "@/components/ui/button";
-import type { FormProduct } from "@/types/product";
 import { allBoatQueryOption } from "@/api/boats";
 import { useQuery } from "@tanstack/react-query";
 

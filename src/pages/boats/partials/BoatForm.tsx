@@ -9,11 +9,17 @@ import FormButton from "@/components/global/FormButton";
 import FormInput from "@/components/global/FormInput";
 import FormLabel from "@/components/global/FormLabel";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { X } from "lucide-react";
-import { useEffect } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { PenBox, Trash2, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  type SubmitHandler,
+} from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import ZoneDialog from "./ZoneDialog";
 
 type FormFields = {
   name: string;
@@ -21,11 +27,11 @@ type FormFields = {
   boat_type_id: number;
   capacity: number;
   zones: Array<{
-    id: number;
+    id: string | number;
     images: File[];
     name: string;
     capacity: number;
-  }>
+  }>;
 };
 
 const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
@@ -70,6 +76,40 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
       reset({ name: boat.name });
     }
   }, [boat, reset]);
+
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
+  const {
+    fields: zoneFields,
+    append: appendZone,
+    remove: removeZone,
+    update: updateZone,
+  } = useFieldArray({
+    name: "zones",
+    control,
+    keyName: "z_id",
+  });
+
+  const handleSaveZone = (newZoneData: any) => {
+    if (editingIndex !== null) {
+      updateZone(editingIndex, newZoneData);
+    } else {
+      appendZone(newZoneData);
+    }
+    setDialogOpen(false);
+    setEditingIndex(null);
+  };
+
+  const handleOpenNewZone = () => {
+    setEditingIndex(null);
+    setDialogOpen(true);
+  };
+
+  const handleOpenEditZone = (index: number) => {
+    setEditingIndex(index);
+    setDialogOpen(true);
+  };
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -190,12 +230,78 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
           <label htmlFor="name" className="block mb-2.5 text-gray-700">
             Capacity
           </label>
-          <FormInput id="capacity" placeholder="Enter capacity" {...register("capacity")} />
+          <FormInput
+            id="capacity"
+            placeholder="Enter capacity"
+            {...register("capacity")}
+          />
           {errors.capacity && (
             <div className="text-red-500 text-sm mt-1.5">
               {errors.capacity.message}
             </div>
           )}
+        </div>
+
+        <h4 className="mb-3">Zones</h4>
+        <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-xs mb-5">
+          <table className="min-w-full divide-y divide-gray-200 shadow-lg rounded-lg">
+            <thead>
+              <tr>
+                <td className="w-0.5">
+                  <ZoneDialog
+                    dialogOpen={dialogOpen}
+                    setDialogOpen={setDialogOpen}
+                    onSaveZone={handleSaveZone}
+                    isEditing={editingIndex !== null}
+                    initialZoneData={
+                      editingIndex !== null
+                        ? zoneFields[editingIndex]
+                        : undefined
+                    }
+                    handleOpenNewZone={handleOpenNewZone}
+                  />
+                </td>
+                <td className="px-6 py-3 text-left text-sm tracking-wide text-gray-600">
+                  Name
+                </td>
+                <td className="px-6 py-3 text-left text-sm tracking-wide text-gray-600">
+                  Capacity
+                </td>
+                <td className="px-6 py-3 text-right text-sm tracking-wide text-gray-600">
+                  Action
+                </td>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {zoneFields.map((zone, index) => (
+                <tr key={zone.id}>
+                  <td className="w-0.5"></td>
+                  <td className="px-6 py-3 whitespace-nowrap text-sm">
+                    {zone.name}
+                  </td>
+                  <td className="px-6 py-3 whitespace-nowrap text-sm">
+                    {zone.capacity}
+                  </td>
+                  <td className="px-6 py-3 text-end">
+                    <span>
+                      <PenBox
+                        size={18}
+                        strokeWidth={2.1}
+                        className="inline me-4 text-gray-600 cursor-pointer"
+                        onClick={() => handleOpenEditZone(index)}
+                      />
+                      <Trash2
+                        size={18}
+                        strokeWidth={2.1}
+                        className="inline text-red-600 cursor-pointer"
+                        onClick={() => removeZone(index)}
+                      />
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         <div className="flex justify-end">
