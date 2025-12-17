@@ -44,3 +44,15 @@ const deleteBoatType = async (boatTypeId: number) => {
     const response = await api.delete(`/admin/boat-types/${boatTypeId}`);
     return response.data;
 };
+
+export const allBoatTypeQueryOption = () => {
+    return {
+        queryKey: ['all_boat_types'],
+        queryFn: () => fetchAllBoatTypes(),
+    }
+}
+
+const fetchAllBoatTypes = async () => {
+    const response = await api.get(`/admin/all/boat-types`);
+    return response.data.data.data;
+}

@@ -50,7 +50,7 @@ interface BoatDialogProps {
   setDialogOpen: (open: boolean) => void;
   onSaveBoat: (newBoatData: LocalBoatForm, boatName?: string) => void;
   isEditing: boolean;
-  initialBoatData?: FieldArrayWithId<FormProduct, "boats", "id">;
+  initialBoatData?: any;
   handleOpenNewBoat?: () => void;
 }
 
