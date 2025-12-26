@@ -26,6 +26,7 @@ export const fetchAllBoats = async () => {
 export const create = async (newBoat: any) => {
   const formData = new FormData();
   formData.append("name", newBoat.name || "");
+  formData.append("description", newBoat.description || "");
   formData.append(`boat_type[id]`, (newBoat.boat_type_id || ""));
   formData.append('capacity', (newBoat.capacity || ''));
 
@@ -55,6 +56,7 @@ export const update = async (boatId: number, data: any) => {
   const formData = new FormData();
   formData.append("_method", "PUT");
   formData.append("name", data.name || "");
+  formData.append("description", data.description || "");
   formData.append(`boat_type[id]`, (data.boat_type_id || ""));
   formData.append('capacity', (data.capacity || ''));
 

@@ -23,6 +23,7 @@ import ZoneDialog from "./ZoneDialog";
 
 type FormFields = {
   name: string;
+  description: string;
   images: File[];
   boat_type_id: number;
   capacity: number;
@@ -75,6 +76,7 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
     if (boat && !isCreate) {
       reset({
         name: boat.name,
+        description: boat.description,
         boat_type_id: boat.boat_type_id,
         capacity: boat.capacity,
         images: [],
@@ -123,6 +125,7 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
   };
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    console.log("Submitted data:", data);
     try {
       if (isCreate) {
         createMutation.mutate(data);
@@ -130,7 +133,7 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
         updateMutation.mutate({ boatId, data });
       }
 
-      toast.success(`Boat ${isCreate ? "created" : "updated"} successfully.`);
+      // toast.success(`Boat ${isCreate ? "created" : "updated"} successfully.`);
     } catch (error) {
       setError("root", {
         type: "manual",
@@ -235,6 +238,29 @@ const BoatForm = ({ isCreate }: { isCreate: boolean }) => {
               </div>
             )}
           </div>
+        </div>
+
+        <div className="mb-5">
+          <label htmlFor="description" className="block mb-2.5 text-gray-700">
+            Description
+          </label>
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <textarea
+                id="description"
+                placeholder="Enter description"
+                className="w-full min-h-60 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-0"
+                {...field}
+              ></textarea>
+            )}
+          />
+          {errors.description && (
+            <div className="text-red-500 text-sm mt-1.5">
+              {errors.description.message}
+            </div>
+          )}
         </div>
 
         <div className="mb-5">
