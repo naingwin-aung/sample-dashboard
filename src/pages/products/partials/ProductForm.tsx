@@ -72,6 +72,14 @@ const ProductForm = ({ isCreate }: { isCreate: boolean }) => {
             net_price: p.net_price,
           })),
         })),
+        additional_options: boat.additional_options.map((ao: any) => ({
+          id: ao.id,
+          option: {
+            id: ao.option.id,
+          },
+          selling_price: ao.selling_price,
+          net_price: ao.net_price,
+        })),
       }));
 
       const names: Record<string, string> = {};

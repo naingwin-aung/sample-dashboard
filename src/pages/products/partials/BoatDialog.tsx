@@ -10,11 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Trash2 } from "lucide-react";
-import {
-  useFieldArray,
-  useForm,
-  type SubmitHandler,
-} from "react-hook-form";
+import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import TicketItem from "./TicketItem";
 import { Button } from "@/components/ui/button";
@@ -41,6 +37,14 @@ export type LocalBoatForm = {
       net_price: number;
     }>;
   }>;
+  additional_options: Array<{
+    id: string | number;
+    option: {
+      id: string | number;
+    },
+    selling_price: number;
+    net_price: number;
+  }>;
 };
 
 interface BoatDialogProps {
@@ -64,25 +68,34 @@ const BoatDialog = ({
     ...allBoatQueryOption(),
   });
 
-  const [activeTab, setActiveTab] = useState<"schedule" | "tickets">(
-    "schedule"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "schedule" | "tickets" | "additional_options"
+  >("schedule");
 
   const getNewScheduleTemplate = () => ({
-    id: Math.random().toString(36).substr(2, 9),
+    id: Math.random().toString(36).slice(2, 11),
     start_time: "",
     end_time: "",
   });
 
   const getNewTicketTemplate = () => ({
-    id: Math.random().toString(36).substr(2, 9),
+    id: Math.random().toString(36).slice(2, 11),
     name: "",
     short_description: "",
     prices: [],
   });
 
+  const getNewAdditionalOptionTemplate = () => ({
+    id: Math.random().toString(36).slice(2, 11),
+    option: {
+      id: null,
+    },
+    selling_price: 0,
+    net_price: 0,
+  });
+
   const getNewPriceTemplate = () => ({
-    id: Math.random().toString(36).substr(2, 9),
+    id: Math.random().toString(36).slice(2, 11),
     name: "",
     selling_price: 0,
     net_price: 0,
@@ -104,8 +117,9 @@ const BoatDialog = ({
           boat_id: initialBoatData.boat_id,
           start_date: initialBoatData.start_date,
           end_date: initialBoatData.end_date,
-          schedule_times: [...initialBoatData.schedule_times],
-          tickets: [...initialBoatData.tickets],
+          schedule_times: Array.isArray(initialBoatData.schedule_times) ? [...initialBoatData.schedule_times] : [],
+          tickets: Array.isArray(initialBoatData.tickets) ? [...initialBoatData.tickets] : [],
+          additional_options: Array.isArray(initialBoatData.additional_options) ? [...initialBoatData.additional_options] : [],
         });
       } else {
         reset({
@@ -115,6 +129,7 @@ const BoatDialog = ({
           end_date: "",
           schedule_times: [getNewScheduleTemplate()],
           tickets: [getNewTicketTemplate()],
+          additional_options: [getNewAdditionalOptionTemplate()],
         });
       }
     }
@@ -130,6 +145,15 @@ const BoatDialog = ({
   });
 
   const {
+    fields: additionalOptionFields,
+    append: appendAdditionalOption,
+    remove: removeAdditionalOption,
+  } = useFieldArray({
+    control,
+    name: "additional_options",
+  });
+
+  const {
     fields: ticketFields,
     append: appendTicket,
     remove: removeTicket,
@@ -139,7 +163,7 @@ const BoatDialog = ({
   });
 
   const handleLocalSubmit: SubmitHandler<LocalBoatForm> = (data) => {
-    const selectedBoat = all_boats?.find((b) => b.id == data.boat_id);
+    const selectedBoat = all_boats?.find((b: { id: string | number; name: string }) => b.id == data.boat_id);
     onSaveBoat(data, selectedBoat?.name);
     setDialogOpen(false);
     setActiveTab("schedule");
@@ -162,12 +186,16 @@ const BoatDialog = ({
           <Tabs
             defaultValue={activeTab}
             value={activeTab}
-            onValueChange={setActiveTab}
+            onValueChange={(value) => setActiveTab(value as "schedule" | "tickets" | "additional_options")}
           >
             <TabsList>
               <TabsTrigger value="schedule">Schedule</TabsTrigger>
               <TabsTrigger value="tickets">Tickets</TabsTrigger>
+              <TabsTrigger value="additional_options">
+                Additional Options
+              </TabsTrigger>
             </TabsList>
+
             <TabsContent value="schedule">
               <div className="flex items-center gap-4 mt-3 mb-7">
                 <div className="w-1/3">
@@ -178,7 +206,7 @@ const BoatDialog = ({
                     {...register("boat_id")}
                   >
                     <option value="">Select a boat</option>
-                    {all_boats?.map((boat) => (
+                    {all_boats?.map((boat: { id: string | number; name: string }) => (
                       <option key={boat.id} value={boat.id}>
                         {boat.name}
                       </option>
@@ -314,13 +342,110 @@ const BoatDialog = ({
                     Previous
                   </Button>
 
-                  <FormButton
-                    onClick={handleSubmit(handleLocalSubmit)}
-                    disabled={isSubmitting}
+                  <Button
+                    className="bg-white text-black border-[1.8px] border-dashed hover:bg-white cursor-pointer"
+                    onClick={() => setActiveTab("additional_options")}
                   >
-                    {isEditing ? "Update" : "Save"}
-                  </FormButton>
+                    Next
+                  </Button>
                 </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="additional_options">
+              <div className="overflow-x-auto border border-gray-200 rounded-lg shadow-xs mb-5 mt-3">
+                <table className="min-w-full divide-y divide-gray-200 shadow-lg rounded-lg">
+                  <thead>
+                    <tr>
+                      <th className="w-0.5">
+                        <Plus
+                          size={19}
+                          className="ms-2.5 text-gray-600 cursor-pointer"
+                          onClick={() =>
+                            appendAdditionalOption(
+                              getNewAdditionalOptionTemplate()
+                            )
+                          }
+                        />
+                      </th>
+                      <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                        Additional Option
+                      </th>
+                      <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                        Selling Price
+                      </th>
+                      <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600">
+                        Net Price
+                      </th>
+                      <th className="px-6 py-3 text-left text-sm font-medium tracking-wide text-gray-600"></th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {additionalOptionFields?.map((option, index) => (
+                      <tr key={option.id}>
+                        <td className="w-0.5"></td>
+                        <td className="px-6 py-3 whitespace-nowrap text-sm">
+                          <FormInput
+                            type="text"
+                            id="option.id"
+                            placeholder="Enter option ID"
+                            {...register(`additional_options.${index}.option.id`)}
+                          />
+                        </td>
+                        <td className="px-6 py-3 whitespace-nowrap text-sm">
+                          <FormInput
+                            type="number"
+                            id="selling_price"
+                            placeholder="Enter selling price"
+                            {...register(
+                              `additional_options.${index}.selling_price`
+                            )}
+                          />
+                        </td>
+
+                        <td className="px-6 py-3 whitespace-nowrap text-sm">
+                          <FormInput
+                            type="number"
+                            id="net_price"
+                            placeholder="Enter net price"
+                            {...register(
+                              `additional_options.${index}.net_price`
+                            )}
+                          />
+                        </td>
+
+                        <td className="px-6 py-3 text-end">
+                          {additionalOptionFields.length > 1 && (
+                            <span>
+                              <Trash2
+                                size={18}
+                                strokeWidth={2.1}
+                                className="inline text-red-600 cursor-pointer"
+                                onClick={() => removeAdditionalOption(index)}
+                              />
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="flex justify-between items-center">
+                <Button
+                    className="bg-white text-black border-[1.8px] border-dashed hover:bg-white cursor-pointer"
+                    onClick={() => setActiveTab("tickets")}
+                  >
+                    Previous
+                  </Button>
+
+                <FormButton
+                  onClick={handleSubmit(handleLocalSubmit)}
+                  disabled={isSubmitting}
+                >
+                  {isEditing ? "Update" : "Save"}
+                </FormButton>
               </div>
             </TabsContent>
           </Tabs>
